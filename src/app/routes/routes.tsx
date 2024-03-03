@@ -8,7 +8,7 @@ import {
 } from "../components";
 import { DefaultLayout } from "../layouts";
 
-const routes = () => [
+const routes = (isLoggedIn: boolean) => [
   {
     element: <DefaultLayout />,
     children: [
@@ -18,19 +18,19 @@ const routes = () => [
       },
       {
         path: "signin",
-        element: <SigninPage />,
+        element: !isLoggedIn ? <SigninPage /> : <Navigate to="/" />,
       },
       {
         path: "signup",
-        element: <SignupPage />,
+        element: !isLoggedIn ? <SignupPage /> : <Navigate to="/" />,
       },
       {
         path: "favorites",
-        element: <FavoritesPage />,
+        element: isLoggedIn ? <FavoritesPage /> : <Navigate to="/signin" />,
       },
       {
         path: "history",
-        element: <HistoryPage />,
+        element: isLoggedIn ? <HistoryPage /> : <Navigate to="/signin" />,
       },
     ],
   },
