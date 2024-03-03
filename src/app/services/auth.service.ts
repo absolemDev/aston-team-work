@@ -1,25 +1,49 @@
-import { initializeApp } from "firebase/app";
-import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  getAuth,
-} from "firebase/auth";
+import axios from "axios";
+import { localStorageService } from "#services";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyDUXbKMdGsTyAl2bHKGaweBdGuZsXE0u7s",
-  authDomain: "aston-team-work.firebaseapp.com",
-  projectId: "aston-team-work",
-  storageBucket: "aston-team-work.appspot.com",
-  messagingSenderId: "741383940639",
-  appId: "1:741383940639:web:8e83e5b4b056c96dc5032a",
+interface AuthData {
+  email: string;
+  password: string;
+}
+
+const httpAuth = axios.create({
+  baseURL: "https://identitytoolkit.googleapis.com/v1/",
+  params: {
+    key: process.env.REACT_APP_FIREBASE_API_KEY,
+  },
+});
+
+httpAuth.interceptors.response.use(
+  (res) => res,
+  (error) => {
+    throw new Error(error.response.data.error.message);
+  }
+);
+
+const authService = {
+  register: async ({ email, password }: AuthData) => {
+    const { data } = await httpAuth.post(`accounts:signUp`, {
+      email,
+      password,
+      returnSecureToken: true,
+    });
+    return data;
+  },
+  login: async ({ email, password }: AuthData) => {
+    const { data } = await httpAuth.post(`accounts:signInWithPassword`, {
+      email,
+      password,
+      returnSecureToken: true,
+    });
+    return data;
+  },
+  refresh: async () => {
+    const { data } = await httpAuth.post("token", {
+      grant_type: "refresh_token",
+      refresh_token: localStorageService.getRefreshToken(),
+    });
+    return data;
+  },
 };
 
-const app = initializeApp(firebaseConfig);
-
-export const signUp = async (email: string, password: string) => {
-  return createUserWithEmailAndPassword(getAuth(app), email, password);
-};
-
-export const signIn = async (email: string, password: string) => {
-  return signInWithEmailAndPassword(getAuth(app), email, password);
-};
+export { authService };

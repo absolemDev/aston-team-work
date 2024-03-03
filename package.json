@@ -13,7 +13,6 @@
     "@types/react-dom": "^18.2.19",
     "axios": "^1.6.7",
     "bootstrap": "^5.3.3",
-    "firebase": "^10.8.1",
     "react": "^18.2.0",
     "react-bootstrap": "^2.10.1",
     "react-dom": "^18.2.0",
@@ -46,5 +45,12 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "imports": {
+    "#hooks": "./src/app/hooks/index.ts",
+    "#commonComponents": "./src/app/components/common/index.ts",
+    "#services": "./src/app/services/index.ts",
+    "#store": "./src/app/store/index.ts",
+    "#utils": "./src/app/utils/index.ts"
   }
 }
