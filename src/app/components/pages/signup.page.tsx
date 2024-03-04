@@ -1,7 +1,11 @@
-import React from "react";
+import { RegisterForm } from "../ui";
 
 const SignupPage = () => {
-  return <h2>Signup Page</h2>;
+  return (
+    <>
+      <RegisterForm />
+    </>
+  );
 };
 
 export { SignupPage };

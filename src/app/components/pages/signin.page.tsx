@@ -1,7 +1,12 @@
 import React from "react";
+import { LoginFrom } from "../ui/forms/loginFrom";
 
 const SigninPage = () => {
-  return <h2>Signin Page</h2>;
+  return (
+    <>
+      <LoginFrom />
+    </>
+  );
 };
 
 export { SigninPage };
