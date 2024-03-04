@@ -1,5 +1,5 @@
 import { fetchOptions } from "../interfaces/globalInterface";
-import { url, options } from "./fetchParams";
+import config from "../../config.json";
 
 async function fetchResponse(url: string, options: fetchOptions): Promise<any> {
   try {
@@ -10,12 +10,11 @@ async function fetchResponse(url: string, options: fetchOptions): Promise<any> {
     return error;
   }
 }
-// https://.../.../cards/?hearht=10&
 
-async function getURLWithParams(
+function getURLWithParams(
   optionalParams: any,
   url: string
-): Promise<any> {
+): string {
   const arrOfOptionalParams = Object.keys(optionalParams);
   let urlWithParams: string = url;
 
@@ -26,19 +25,20 @@ async function getURLWithParams(
       : (urlWithParams += `?${arrOfOptionalParams[i]}=${optionalParams[valueOfParams]}`)
   }
 
-  return fetchResponse(urlWithParams, options);
+  return urlWithParams
 }
 
 async function getCardsByCustomParams(
   customFilter: string,
   optionalParams?: any
 ) {
-  const customUrl = url + customFilter;
+  const customUrl = config.url + customFilter;
 
   if (!optionalParams) {
-    return fetchResponse(customUrl, options);
+    return fetchResponse(customUrl, config.options);
   }
-  getURLWithParams(optionalParams, customUrl);
+  const urlWithParams = getURLWithParams(optionalParams, customUrl);
+  fetchResponse(urlWithParams, config.options)
 }
 
 export { fetchResponse, getURLWithParams, getCardsByCustomParams };
