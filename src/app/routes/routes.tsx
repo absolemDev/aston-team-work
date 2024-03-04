@@ -1,5 +1,6 @@
 import { Navigate } from "react-router-dom";
 import {
+  DesksPage,
   FavoritesPage,
   HistoryPage,
   HomePage,
@@ -31,6 +32,10 @@ const routes = (isLoggedIn: boolean) => [
       {
         path: "history",
         element: isLoggedIn ? <HistoryPage /> : <Navigate to="/signin" />,
+      },
+      {
+        path: "desk",
+        element: isLoggedIn ? <DesksPage /> : <Navigate to="/signin" />,
       },
     ],
   },
