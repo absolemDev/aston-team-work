@@ -38,7 +38,7 @@ async function getCardsByCustomParams(
     return fetchResponse(customUrl, config.options);
   }
   const urlWithParams = getURLWithParams(optionalParams, customUrl);
-  fetchResponse(urlWithParams, config.options)
+  return fetchResponse(urlWithParams, config.options)
 }
 
 export { fetchResponse, getURLWithParams, getCardsByCustomParams };

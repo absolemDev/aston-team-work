@@ -25,7 +25,8 @@ const getMethods = {
     if (!optionalParams) {
       return fetchResponse(cardBackUrl, config.options);
     }
-    return getURLWithParams(optionalParams, cardBackUrl);
+    const urlWithParams = getURLWithParams(optionalParams, cardBackUrl);
+    return fetchResponse(urlWithParams, config.options);
   },
   getCardByClass: async function (
     className: string,
@@ -82,7 +83,8 @@ const getMethods = {
     if (!optionalParams) {
       return fetchResponse(infoUrl, config.options);
     }
-    return getURLWithParams(optionalParams, infoUrl);
+    const urlWithParams = getURLWithParams(optionalParams, infoUrl);
+    return fetchResponse(urlWithParams, config.options);
   },
 };
 
