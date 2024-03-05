@@ -11,7 +11,7 @@ interface Tokens {
   expiresIn: number;
 }
 
-export const setTokens = ({
+const setTokens = ({
   refreshToken,
   idToken,
   localId,
@@ -24,15 +24,15 @@ export const setTokens = ({
   localStorage.setItem(EXPIRES_KEY, expiresDate.toString());
 };
 
-export const getAccessToken = () => {
+const getAccessToken = () => {
   return localStorage.getItem(TOKEN_KEY);
 };
 
-export const getRefreshToken = () => {
+const getRefreshToken = () => {
   return localStorage.getItem(REFRESH_KEY);
 };
 
-export const removeAuthData = () => {
+const removeAuthData = () => {
   localStorage.removeItem(USER_ID_KEY);
   localStorage.removeItem(USER_NAME_KEY);
   localStorage.removeItem(TOKEN_KEY);
@@ -40,15 +40,15 @@ export const removeAuthData = () => {
   localStorage.removeItem(EXPIRES_KEY);
 };
 
-export const getTokenExpiresDate = () => {
+const getTokenExpiresDate = () => {
   return localStorage.getItem(EXPIRES_KEY);
 };
 
-export const getUserId = () => {
+const getUserId = () => {
   return localStorage.getItem(USER_ID_KEY);
 };
 
-export const getUserName = () => {
+const getUserName = () => {
   return localStorage.getItem(USER_NAME_KEY);
 };
 

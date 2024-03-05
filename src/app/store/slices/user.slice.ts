@@ -5,6 +5,8 @@ import { generetaAuthError } from "#utils";
 
 export interface UserState {
   userName: string;
+  favorites: string[];
+  history: string[];
   isLoggedIn: boolean;
   isLoading: boolean;
   error: string;
@@ -12,6 +14,8 @@ export interface UserState {
 
 const initialState: UserState = {
   userName: localStorageService.getUserName() || "",
+  favorites: [],
+  history: [],
   isLoggedIn: false,
   isLoading: false,
   error: "",
@@ -38,6 +42,15 @@ const userSlice = createSlice({
       state.userName = "";
       state.isLoggedIn = false;
     },
+    favoriteAdded: (state, { payload }) => {
+      state.favorites.push(payload);
+    },
+    favoriteRemoved: (state, { payload }) => {
+      state.favorites = state.favorites.filter((cardId) => cardId !== payload);
+    },
+    historyAdded: (state, { payload }) => {
+      state.history.push(payload);
+    },
     errorCleaned: (state) => {
       state.error = "";
     },
@@ -49,6 +62,9 @@ export const {
   authRequestSuccess,
   authRequestFailed,
   userLogout,
+  favoriteAdded,
+  favoriteRemoved,
+  historyAdded,
   errorCleaned,
 } = userSlice.actions;
 
@@ -97,6 +113,24 @@ export const logOut = (): AppThunk => (dispatch) => {
 export const clearAuthError = (): AppThunk => (dispatch) => {
   dispatch(errorCleaned());
 };
+
+export const addFavorite =
+  (cardId: string): AppThunk =>
+  (dispatch) => {
+    dispatch(favoriteAdded(cardId));
+  };
+
+export const removeFavorite =
+  (cardId: string): AppThunk =>
+  (dispatch) => {
+    dispatch(favoriteRemoved(cardId));
+  };
+
+export const addHisory =
+  (history: string): AppThunk =>
+  (dispatch) => {
+    dispatch(historyAdded(history));
+  };
 
 export const getUserLoadingStatus = (state: RootState) => state.user.isLoading;
 export const getUserLoggedInStatus = (state: RootState) =>
