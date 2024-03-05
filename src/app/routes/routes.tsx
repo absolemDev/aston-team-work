@@ -1,6 +1,6 @@
 import { Navigate } from "react-router-dom";
 import {
-  DesksPage,
+  AboutPage,
   FavoritesPage,
   HistoryPage,
   HomePage,
@@ -34,8 +34,8 @@ const routes = (isLoggedIn: boolean) => [
         element: isLoggedIn ? <HistoryPage /> : <Navigate to="/signin" />,
       },
       {
-        path: "desk",
-        element: isLoggedIn ? <DesksPage /> : <Navigate to="/signin" />,
+        path: "about",
+        element: isLoggedIn ? <AboutPage /> : <Navigate to="/signin" />,
       },
     ],
   },
