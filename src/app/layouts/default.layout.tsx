@@ -1,13 +1,31 @@
-import React from "react";
-import {Link, Outlet} from "react-router-dom";
+import React, {useId} from "react";
+import {Outlet} from "react-router-dom";
 import {Container, Image, Nav, Navbar, NavDropdown} from "react-bootstrap";
 import {useAppDispatch, useAppSelector} from "#hooks";
-import {authRequested, getUserLoadingStatus, getUserName, logOut} from "#store";
+import {getUserName, logOut} from "#store";
 
+type ClassType = {
+  id: string;
+  clName: string;
+  img: string;
+}
 const DefaultLayout = () => {
   const dispatch = useAppDispatch();
-  const isLoggedIn = useAppSelector(getUserLoadingStatus);
   const userName = useAppSelector(getUserName);
+
+  const id = useId();
+  const classes: Array<ClassType> = [
+    {id, clName: "Death Knight", img: ""},
+    {id, clName: "Demon Hunter", img: ""},
+    {id, clName: "Druid", img: ""},
+    {id, clName: "Hunter", img: ""},
+    {id, clName: "Mage", img: ""},
+    {id, clName: "Paladin", img: ""},
+    {id, clName: "Rogue", img: ""},
+    {id, clName: "Shaman", img: ""},
+    {id, clName: "Warlock", img: ""},
+    {id, clName: "Warrior", img: ""},
+  ]
 
   const handleClick = () => {
     dispatch(logOut());
@@ -15,8 +33,8 @@ const DefaultLayout = () => {
 
   return (
     <>
-      <Navbar expand="lg" className="bg-body-tertiary flex-column text-uppercase">
-        <Container>
+      <Navbar expand="lg" className="bg-body-tertiary flex-column text-uppercase p-0">
+        <Container className="p-0" style={{height: "90px", fontWeight: "bold"}}>
           <Navbar.Brand href="/">
             <div className="fs-2 fw-bold">heartstone</div>
             <div>top desk</div>
@@ -27,23 +45,28 @@ const DefaultLayout = () => {
               {
                 userName
                   ? <>
-                    <NavDropdown title="Desk" id="basic-nav-dropdown">
-                      <NavDropdown.Item href="desk/3.1">Death Knight Decks</NavDropdown.Item>
-                      <NavDropdown.Item href="desk/3.2">Demon Hunter Decks</NavDropdown.Item>
-                      <NavDropdown.Item href="desk/3.3" className="text-uppercase">Druid Decks</NavDropdown.Item>
+                    <NavDropdown title="Desk" id="basic-nav-dropdown"  className="px-3">
+                      {
+                        classes.map((cl,index)=>
+                          <NavDropdown.Item href={`desk/${index}`} key={cl.id} style={{backgroundImage: `url(${cl.img})`}}>
+                            {`${cl.clName} Decks`}
+                          </NavDropdown.Item>)
+                      }
                       <NavDropdown.Divider/>
-                      <NavDropdown.Item href="desk/3.4">
+                      <NavDropdown.Item href="desk/all">
                         All
                       </NavDropdown.Item>
                     </NavDropdown>
-                    <Nav.Link href="/favorites">Favorites page</Nav.Link>
-                    <Nav.Link href="/history">History page</Nav.Link>
-                    <Nav.Link href="#">{userName}</Nav.Link>
-                    <Nav.Link href="#">logout</Nav.Link>
+                    <Nav.Link href="/favorites" className="px-3">Favorites page</Nav.Link>
+                    <Nav.Link href="/history" className="px-3">History page</Nav.Link>
+                    <Nav.Link href="#" className="px-1" style={{fontWeight: "normal"}}>
+                      {`(${userName})`}
+                    </Nav.Link>
+                    <Nav.Link href="#"className="px-0"  onClick={handleClick}>logout</Nav.Link>
                   </>
                   : <>
                     <Nav.Link href="/signin">Signin</Nav.Link>
-                    <Nav.Link href="/signin" onClick={handleClick}>Signup</Nav.Link>
+                    <Nav.Link href="/signup">Signup</Nav.Link>
                   </>
               }
             </Nav>
