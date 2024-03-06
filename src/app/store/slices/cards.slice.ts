@@ -4,6 +4,10 @@ import { Card, apiService } from "../../services/api.service";
 
 export interface CardsState {
   entities: Card[];
+  classes: string[];
+  races: string[];
+  factions: string[];
+  sets: string[];
   currentCard: Card | null;
   isLoading: boolean;
   error: string;
@@ -11,6 +15,10 @@ export interface CardsState {
 
 const initialState: CardsState = {
   entities: [],
+  classes: [],
+  races: [],
+  factions: [],
+  sets: [],
   currentCard: null,
   isLoading: false,
   error: "",
@@ -32,6 +40,13 @@ const cardsSlice = createSlice({
       state.currentCard = payload;
       state.isLoading = false;
     },
+    cardsInfoRequestSuccess: (state, { payload }) => {
+      state.classes = payload.classes;
+      state.races = payload.races;
+      state.factions = payload.factions;
+      state.sets = payload.sets;
+      state.isLoading = false;
+    },
     cardsRequestFailed: (state, { payload }) => {
       state.error = payload;
       state.isLoading = false;
@@ -43,6 +58,7 @@ export const {
   cardsRequested,
   cardsRequestSuccess,
   singleCardRequestSuccess,
+  cardsInfoRequestSuccess,
   cardsRequestFailed,
 } = cardsSlice.actions;
 
@@ -150,16 +166,22 @@ export const loadSingleCard =
     }
   };
 
-export const loadInfo = (): AppThunk => async (dispatch) => {
+export const loadCardsInfo = (): AppThunk => async (dispatch) => {
   try {
     dispatch(cardsRequested());
     const { data } = await apiService.getInfo();
+    dispatch(cardsInfoRequestSuccess(data));
   } catch (error) {
     if (error instanceof Error) dispatch(cardsRequestFailed(error.message));
   }
 };
 
-export const getCardsLoadingStatus = (state: RootState) => state.user.isLoading;
-export const getCardsError = (state: RootState) => state.user.error;
+export const getCardsClasses = (state: RootState) => state.cards.classes;
+export const getCardsFactions = (state: RootState) => state.cards.factions;
+export const getCardsRaces = (state: RootState) => state.cards.races;
+export const getCardsSets = (state: RootState) => state.cards.sets;
+export const getCardsLoadingStatus = (state: RootState) =>
+  state.cards.isLoading;
+export const getCardsError = (state: RootState) => state.cards.error;
 
 export default cardsSlice.reducer;
