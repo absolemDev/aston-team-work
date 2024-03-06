@@ -160,6 +160,7 @@ export const loadInfo = (): AppThunk => async (dispatch) => {
 };
 
 export const getCardsLoadingStatus = (state: RootState) => state.user.isLoading;
+export const getCards = (state:RootState) => state.cards.entities;
 export const getCardsError = (state: RootState) => state.user.error;
 
 export default cardsSlice.reducer;
