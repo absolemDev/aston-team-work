@@ -2,7 +2,7 @@ import { useAppDispatch, useAppSelector } from "#hooks";
 import { useEffect } from "react";
 import {
   // loadSingleCard,
-  getCards,
+  getCardsClasses,
   loadCardsByFaction,
 } from "../../../store/slices/cards.slice";
 import { FormFilters } from "./form.filter";
@@ -10,7 +10,7 @@ import { FormFilters } from "./form.filter";
 const MainFilters = () => {
   const dispatch = useAppDispatch();
   //вытаскиваю из стора
-  const card = useAppSelector(getCards);
+  const card = useAppSelector(getCardsClasses);
 
   useEffect(() => {
     //запрашиваешь что-то загружаешь
