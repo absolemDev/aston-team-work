@@ -1,11 +1,16 @@
-import React from 'react';
-import {Nav} from "react-bootstrap";
+import React from "react";
+import { Nav } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 const NavLoggedOutUser = () => {
   return (
     <>
-      <Nav.Link href="/signin">Signin</Nav.Link>
-      <Nav.Link href="/signup">Signup</Nav.Link>
+      <Nav.Link as={Link} to="/signin">
+        Signin
+      </Nav.Link>
+      <Nav.Link as={Link} to="/signup">
+        Signup
+      </Nav.Link>
     </>
   );
 };
