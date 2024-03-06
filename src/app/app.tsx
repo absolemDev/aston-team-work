@@ -6,8 +6,9 @@ import { getUserLoadingStatus } from "./store";
 
 function App() {
   const isLoggedIn = useAppSelector(getUserLoadingStatus);
+  console.log(isLoggedIn)
   const elements = useRoutes(routes(isLoggedIn));
-  return <Container className="App">{elements}</Container>;
+  return <Container className="App m-0 p-0" fluid='true'>{elements}</Container>;
 }
 
 export { App };

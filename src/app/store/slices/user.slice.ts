@@ -136,5 +136,6 @@ export const getUserLoadingStatus = (state: RootState) => state.user.isLoading;
 export const getUserLoggedInStatus = (state: RootState) =>
   state.user.isLoggedIn;
 export const getAuthError = (state: RootState) => state.user.error;
+export const getUserName = (state: RootState) => state.user.userName;
 
 export default userSlice.reducer;
