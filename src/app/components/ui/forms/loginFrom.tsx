@@ -39,7 +39,7 @@ const LoginFrom = () => {
 
   const onSubmit: FormSubmit = useCallback(
     (data) => dispatch(logIn(data.email, data.password, () => navigate("/"))),
-    [dispatch]
+    [dispatch, navigate]
   );
 
   const { formData, handeleSubmit, handleChange, errors } = useForm(
@@ -56,33 +56,37 @@ const LoginFrom = () => {
   );
 
   return (
-    <Form onSubmit={handeleSubmit}>
-      <InputGroupMemo
-        id="email"
-        value={formData.email}
-        onChange={handleChange}
-        label="Email"
-        placeholder="Введите почту"
-        error={errors.email}
-      />
-      <InputGroupMemo
-        id="password"
-        value={formData.password}
-        onChange={handleChange}
-        label="Пароль"
-        type="password"
-        placeholder="Введите пароль"
-        error={errors.password}
-      />
-      <ButtonMemo type="submit" disabled={isLoading} stretch>
-        Вход
-      </ButtonMemo>
-      {authError && (
-        <Alert variant="danger" className="mt-3">
-          {authError}
-        </Alert>
-      )}
-    </Form>
+    <>
+      <h2>ВХОД</h2>
+      <hr />
+      <Form onSubmit={handeleSubmit}>
+        <InputGroupMemo
+          id="email"
+          value={formData.email}
+          onChange={handleChange}
+          label="Email"
+          placeholder="Введите почту"
+          error={errors.email}
+        />
+        <InputGroupMemo
+          id="password"
+          value={formData.password}
+          onChange={handleChange}
+          label="Пароль"
+          type="password"
+          placeholder="Введите пароль"
+          error={errors.password}
+        />
+        <ButtonMemo type="submit" disabled={isLoading} variant="dark" stretch>
+          Войти
+        </ButtonMemo>
+        {authError && (
+          <Alert variant="danger" className="mt-3">
+            {authError}
+          </Alert>
+        )}
+      </Form>
+    </>
   );
 };
 

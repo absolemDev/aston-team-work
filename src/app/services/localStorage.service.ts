@@ -24,6 +24,10 @@ const setTokens = ({
   localStorage.setItem(EXPIRES_KEY, expiresDate.toString());
 };
 
+const setUserName = (name: string) => {
+  localStorage.setItem(USER_NAME_KEY, name);
+};
+
 const getAccessToken = () => {
   return localStorage.getItem(TOKEN_KEY);
 };
@@ -54,6 +58,7 @@ const getUserName = () => {
 
 const localStorageService = {
   setTokens,
+  setUserName,
   getAccessToken,
   getRefreshToken,
   getTokenExpiresDate,

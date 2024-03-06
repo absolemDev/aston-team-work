@@ -16,7 +16,7 @@ const initialState: UserState = {
   userName: localStorageService.getUserName() || "",
   favorites: [],
   history: [],
-  isLoggedIn: false,
+  isLoggedIn: !!localStorageService.getUserName(),
   isLoading: false,
   error: "",
 };
@@ -76,6 +76,7 @@ export const logIn =
       const authData = await authService.login({ email, password });
       localStorageService.setTokens(authData);
       const { content } = await userService.getUserData();
+      localStorageService.setUserName(content.name);
       dispatch(authRequestSuccess({ name: content.name }));
       redirect();
     } catch (error) {
@@ -97,6 +98,7 @@ export const signUp =
       const data = await authService.register({ email, password });
       await userService.create({ _id: data.localId, name, email });
       localStorageService.setTokens(data);
+      localStorageService.setUserName(name);
       dispatch(authRequestSuccess({ name }));
       redirect();
     } catch (error) {

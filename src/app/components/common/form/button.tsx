@@ -22,7 +22,7 @@ const ButtonElement = ({
     <Button
       type={type}
       variant={variant}
-      className={`mt-2${stretch ? " w-100" : ""}`}
+      className={`mt-2 rounded-0 ${stretch ? " w-100" : ""}`}
       disabled={disabled}
       onClick={onClick}
     >
