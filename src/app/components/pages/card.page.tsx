@@ -1,23 +1,18 @@
 import React, {memo} from "react";
 import {useParams} from "react-router-dom";
-import {useAppDispatch, useAppSelector} from "#hooks";
-import {addFavorite} from "#store";
+import {useAppSelector} from "#hooks";
 import {CardDetailedMemo} from "../CardDetailed";
+import {useFavourite} from "../../hooks/useFavourite.hook";
+
 
 const CardPage = () => {
     let {id} = useParams()
-    let dispatch = useAppDispatch()
-    let favourites = useAppSelector(state => state.user.favorites)
     let card = useAppSelector(state => state.cards.entities.find((el) => el.cardId === id?.slice(1)))
-
-    const addToFavourites = () => {
-        if (id) {
-            dispatch(addFavorite(id))
-        }
-    };
+    let [isFavourite, ChangeFavouriteStatus] = useFavourite(id ? id : '')
     return (
         <>
-            <CardDetailedMemo card={card} addToFavourites={addToFavourites}/>
+            <CardDetailedMemo card={card}
+                              ChangeFavouriteStatus={ChangeFavouriteStatus} isFavourite={isFavourite}/>
         </>
 
     )

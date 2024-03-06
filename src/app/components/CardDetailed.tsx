@@ -3,9 +3,10 @@ import {Card} from "../services/api.service";
 
 type cardPageComponentType = {
     card?: Card
-    addToFavourites: Function
+    ChangeFavouriteStatus: Function
+    isFavourite: boolean
 }
-const CardDetailed = ({card, addToFavourites}: cardPageComponentType) => {
+const CardDetailed = ({card, ChangeFavouriteStatus, isFavourite}: cardPageComponentType) => {
     return (
         <div className="card mb-3" style={{maxWidth: "1840px", padding: '20px'}}>
             <div className="row g-0">
@@ -18,7 +19,9 @@ const CardDetailed = ({card, addToFavourites}: cardPageComponentType) => {
                     <img style={{maxWidth: '300px'}}
                          src={card?.img}
                          alt="Card Image"/>
-                    <button onClick={() => addToFavourites()} className="btn btn-primary">Добавить в избранное</button>
+                    <button onClick={() => ChangeFavouriteStatus()}
+                            className={isFavourite ? "btn btn-danger" : "btn btn-primary"}
+                    >{isFavourite ? "Убрать из избранного" : "Добавить в избранное"}</button>
                 </div>
                 <div className="col-md-8">
                     <div className="value-body">
