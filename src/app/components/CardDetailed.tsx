@@ -1,12 +1,12 @@
 import React, {memo} from 'react';
 import {Card} from "../services/api.service";
 
-type cardPageComponentType = {
+type cardDetailedType = {
     card?: Card
     ChangeFavouriteStatus: Function
     isFavourite: boolean
 }
-const CardDetailed = ({card, ChangeFavouriteStatus, isFavourite}: cardPageComponentType) => {
+const CardDetailed = ({card, ChangeFavouriteStatus, isFavourite}: cardDetailedType) => {
     return (
         <div className="card mb-3" style={{maxWidth: "1840px", padding: '20px'}}>
             <div className="row g-0">
@@ -18,7 +18,7 @@ const CardDetailed = ({card, ChangeFavouriteStatus, isFavourite}: cardPageCompon
                 }} className="col-md-4">
                     <img style={{maxWidth: '300px'}}
                          src={card?.img}
-                         alt="Card Image"/>
+                         alt="Card Pic"/>
                     <button onClick={() => ChangeFavouriteStatus()}
                             className={isFavourite ? "btn btn-danger" : "btn btn-primary"}
                     >{isFavourite ? "Убрать из избранного" : "Добавить в избранное"}</button>
@@ -46,9 +46,6 @@ const CardDetailed = ({card, ChangeFavouriteStatus, isFavourite}: cardPageCompon
                             <li>Elitism: {card?.elite ? "Elite" : "Non elite card"}</li>
                         </ul>
                         <hr/>
-                        <p style={{textAlign: "end"}} className="card-text"><small
-                            className="text-body-secondary"></small>
-                        </p>
                     </div>
                 </div>
             </div>

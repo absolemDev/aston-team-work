@@ -8,7 +8,7 @@ import {useFavourite} from "../../hooks/useFavourite.hook";
 const CardPage = () => {
     let {id} = useParams()
     let card = useAppSelector(state => state.cards.entities.find((el) => el.cardId === id?.slice(1)))
-    let [isFavourite, ChangeFavouriteStatus] = useFavourite(id ? id : '')
+    let [isFavourite, ChangeFavouriteStatus] = useFavourite(id || '')
     return (
         <>
             <CardDetailedMemo card={card}
