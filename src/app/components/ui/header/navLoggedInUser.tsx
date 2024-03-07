@@ -1,8 +1,9 @@
 import React from "react";
-import { Nav } from "react-bootstrap";
+import {Nav, NavDropdown} from "react-bootstrap";
 import { logOut } from "#store";
 import { useAppDispatch } from "#hooks";
 import { Link } from "react-router-dom";
+import style from "./header.module.css"
 
 interface NavLoggedInUserProps {
   userName: string;
@@ -18,30 +19,30 @@ const NavLoggedInUser = ({ userName }: NavLoggedInUserProps) => {
   return (
     <>
       <Nav.Link as={Link} to="/favorites" className="px-3">
-        Favorites page
+        избранное
       </Nav.Link>
       <Nav.Link as={Link} to="/history" href="/history" className="px-3">
-        History page
+        история
       </Nav.Link>
       <Nav.Link as={Link} to="/about" href="/about" className="px-3">
-        About us
+        о сайте
       </Nav.Link>
-      <Nav.Link
-        as={Link}
-        to="/favorites"
-        href="#"
-        className="px-1"
-        style={{ fontWeight: "normal" }}
-      >{`(${userName})`}</Nav.Link>
-      <Nav.Link
-        as={Link}
-        to="/favorites"
-        href="#"
-        className="px-0"
-        onClick={handleClick}
+      <NavDropdown
+        title={`(${userName})`}
+        id="basic-nav-dropdown"
+        className={`${style.dropdown} px-1`}
       >
-        logout
-      </Nav.Link>
+        <NavDropdown.Item
+          as={Link}
+          to="/favorites"
+          href="#"
+          className="px-3 w-100"
+          onClick={handleClick}
+        >
+          Выход
+          {/*<i className="bi bi-box-arrow-right m-2"/>*/}
+        </NavDropdown.Item>
+      </NavDropdown>
     </>
   );
 };

@@ -6,10 +6,10 @@ const NavLoggedOutUser = () => {
   return (
     <>
       <Nav.Link as={Link} to="/signin">
-        Signin
+        войти
       </Nav.Link>
       <Nav.Link as={Link} to="/signup">
-        Signup
+        зарегистрироваться
       </Nav.Link>
     </>
   );

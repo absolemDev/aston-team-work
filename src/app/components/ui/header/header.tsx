@@ -4,6 +4,7 @@ import { useAppSelector } from "#hooks";
 import { getUserName } from "#store";
 import { Logo, NavLoggedInUser } from "./index";
 import { NavLoggedOutUser } from "./index";
+import style from "./header.module.css"
 
 const Header = () => {
   const userName = useAppSelector(getUserName);
@@ -13,7 +14,7 @@ const Header = () => {
       expand="lg"
       className="bg-body-tertiary flex-column text-uppercase p-0"
     >
-      <Container className="p-0" style={{ height: "90px", fontWeight: "bold" }}>
+      <Container className={`${style.container} p-0`}>
         <Logo />
         <Navbar className="m-0 justify-content-end" id="basic-navbar-nav">
           <Nav>
