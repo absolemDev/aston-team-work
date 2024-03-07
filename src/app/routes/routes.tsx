@@ -39,7 +39,7 @@ const routes = (isLoggedIn: boolean) => [
       },
     ],
   },
-  { path: "*", element: <Navigate to="/" /> },
+  { path: "*", element: <Navigate to="/" /> }
 ];
 
-export { routes };
+export {routes};

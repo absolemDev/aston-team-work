@@ -1,29 +1,29 @@
-import {useNavigate} from "react-router-dom";
+import { Button, Card } from "react-bootstrap";
+import { memo } from "react";
+import { useNavigate } from "react-router-dom";
 
 type cardType = {
-    id: string
-    name: string
-    rarity: string
-    img: string
+  id: string;
+  title: string;
+  text: string;
+  img: string;
+};
+
+function CardComponent({ id, title, text, img }: cardType) {
+  let navigate = useNavigate();
+  return (
+    <Card style={{ width: "18rem" }}>
+      <Card.Img variant="top" src={img} />
+      <Card.Body>
+        <Card.Title>{title}</Card.Title>
+        <Card.Text>{text}</Card.Text>
+        <Button onClick={() => navigate(`card/:${id}`)} variant="primary">
+          Подробнее
+        </Button>
+      </Card.Body>
+    </Card>
+  );
 }
-export default function Card(props: cardType) {
-    const navigate = useNavigate()
-    return (
-        <div style={{
-            width: "14rem",
-            display: 'flex',
-            flexDirection: "column",
-            alignItems: 'center',
-            maxHeight: '500px',
-            padding: '10px'
-        }}>
-            <img src={props.img} className="card-img-top" alt="Card image" style={{height: '300px'}}/>
-            <div style={{display: 'flex', flexDirection: "column", alignItems: 'center'}} className="card-body">
-                <p style={{fontSize: "18px"}}>Rarity:{props.rarity}</p>
-                <button onClick={() => navigate(`/card/:${props.id}`)} style={{width: "8rem"}} type="button"
-                        className="btn btn-primary">Подробнее
-                </button>
-            </div>
-        </div>
-    )
-}
+
+let CardMemo = memo(CardComponent);
+export default CardMemo;
