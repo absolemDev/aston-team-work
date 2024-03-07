@@ -1,9 +1,8 @@
-import React from "react";
-import {Nav, NavDropdown} from "react-bootstrap";
+import { Nav, NavDropdown } from "react-bootstrap";
 import { logOut } from "#store";
 import { useAppDispatch } from "#hooks";
 import { Link } from "react-router-dom";
-import style from "./header.module.css"
+import style from "./header.module.css";
 
 interface NavLoggedInUserProps {
   userName: string;

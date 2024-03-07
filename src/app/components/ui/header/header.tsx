@@ -1,10 +1,9 @@
-import React from "react";
 import { Container, Image, Nav, Navbar } from "react-bootstrap";
 import { useAppSelector } from "#hooks";
 import { getUserName } from "#store";
 import { Logo, NavLoggedInUser } from "./index";
 import { NavLoggedOutUser } from "./index";
-import style from "./header.module.css"
+import style from "./header.module.css";
 
 const Header = () => {
   const userName = useAppSelector(getUserName);
