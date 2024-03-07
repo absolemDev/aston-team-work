@@ -18,7 +18,7 @@ function CardComponent({ id, title, text, img }: cardType) {
         <Card.Title>{title}</Card.Title>
         <Card.Text>{text}</Card.Text>
         <Button onClick={() => navigate(`card/:${id}`)} variant="primary">
-          Go somewhere
+          Подробнее
         </Button>
       </Card.Body>
     </Card>
