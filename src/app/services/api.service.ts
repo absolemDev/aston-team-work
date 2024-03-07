@@ -24,6 +24,10 @@ export interface Card {
   race?: string;
   playerClass?: string;
   img?: string;
+  text?: string;
+  flavor?: string;
+  artist?: string;
+  elite?: string;
 }
 
 const api = axios.create({
