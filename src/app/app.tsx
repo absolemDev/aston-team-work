@@ -14,7 +14,7 @@ function App() {
     dispatch(loadCardsInfo());
   }, [dispatch]);
 
-  return <Container className="App">{elements}</Container>;
+  return <Container className="App m-0 p-0" fluid="true">{elements}</Container>;
 }
 
 export { App };
