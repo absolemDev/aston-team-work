@@ -6,8 +6,9 @@ import {
   loadCardsByFaction,
   loadCardsInfo,
 } from "../../../store/slices/cards.slice";
-import { FormFilters } from "./form.filter";
-// import { Search } from "./form.searh";
+import { FormFilters } from "./form.filter/form.filter";
+import { FormFiltersFormat } from "./form.filter/form.filter.format";
+import { FormFiltersCost } from "./form.filter/form.filter.cost";
 import {
   Button,
   Form,
@@ -17,6 +18,8 @@ import {
 } from "react-bootstrap";
 import "./style.css";
 import Pagination from "./pagination";
+import getArrayFromInfo from "./compute/getArrayFromInfo";
+import getArrayFromAllCard from "./compute/getArrayFromCard";
 
 const MainFilters = () => {
   const dispatch = useAppDispatch();
@@ -30,45 +33,8 @@ const MainFilters = () => {
   const cost = ["0", "1", "2", "3", "4", "5", "6", "7", "8+"];
   const format = ["Стандарт", "Вольный"];
 
-  Object.entries(info).forEach(([key, value], index) => {
-    key !== "entities" &&
-      key !== "isLoading" &&
-      key !== "error" &&
-      key !== "currentCard" &&
-      arrOfInfo.push({ key, value });
-  });
-
-  //Для allCard
-  // Object.entries(card).forEach(([key, value], index) => {
-  //   value.forEach((el: any) => {
-  //     el.img !== undefined &&
-  //       el.health !== undefined &&
-  //       el.attack !== undefined &&
-  //       el.cardSet !== undefined &&
-  //       el.collectible === true &&
-  //       el.cost !== undefined &&
-  //       el.cardId !== undefined &&
-  //       el.type !== undefined &&
-  //       arrOfCards.push({ img: el.img, name: el.name, id: el.cardId });
-  //   });
-  // });
-
-  Object.entries(card).forEach(([key, value], index) => {
-    value.img !== undefined &&
-      value.health !== undefined &&
-      value.attack !== undefined &&
-      value.cardSet !== undefined &&
-      value.collectible === true &&
-      value.cost !== undefined &&
-      value.cardId !== undefined &&
-      value.type !== undefined &&
-      arrOfCards.push({
-        img: value.img,
-        name: value.name,
-        id: value.cardId,
-        cardSet: value.cardSet,
-      });
-  });
+  getArrayFromInfo(info, arrOfInfo);
+  getArrayFromAllCard(card, arrOfCards);
 
   useEffect(() => {
     //запрашиваешь что-то загружаешь
@@ -104,18 +70,8 @@ const MainFilters = () => {
             />
           </InputGroup>
         </div>
-        <FormFilters
-          name="Стоимость"
-          filter_param="cost"
-          arrOfInfo={arrOfInfo}
-          cost={cost}
-        />
-        <FormFilters
-          name="Формат"
-          filter_param="format"
-          arrOfInfo={arrOfInfo}
-          format={format}
-        />
+        <FormFiltersCost name="Стоимость" cost={cost} />
+        <FormFiltersFormat name="Формат" format={format} />
         <FormFilters
           name="Редкость"
           filter_param="qualities"
