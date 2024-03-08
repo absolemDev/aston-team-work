@@ -8,6 +8,10 @@ export interface CardsState {
   races: string[];
   factions: string[];
   sets: string[];
+  types: string[];
+  qualities: string[];
+  standart: string[];
+  wild: string[];
   currentCard: Card | null;
   isLoading: boolean;
   error: string;
@@ -19,6 +23,10 @@ const initialState: CardsState = {
   races: [],
   factions: [],
   sets: [],
+  types: [],
+  qualities: [],
+  standart: [],
+  wild: [],
   currentCard: null,
   isLoading: false,
   error: "",
@@ -45,6 +53,10 @@ const cardsSlice = createSlice({
       state.races = payload.races;
       state.factions = payload.factions;
       state.sets = payload.sets;
+      state.standart = payload.standart;
+      state.wild = payload.wild;
+      state.qualities = payload.qualities;
+      state.types = payload.types;
       state.isLoading = false;
     },
     cardsRequestFailed: (state, { payload }) => {
@@ -65,7 +77,7 @@ export const {
 export const loadAllCards = (): AppThunk => async (dispatch) => {
   try {
     dispatch(cardsRequested());
-    const { data } = await apiService.getAllCard();
+    const { data } = await apiService.getAllCard({collectible:1});
     dispatch(cardsRequestSuccess(data));
   } catch (error) {
     if (error instanceof Error) dispatch(cardsRequestFailed(error.message));
@@ -180,6 +192,8 @@ export const getCardsClasses = (state: RootState) => state.cards.classes;
 export const getCardsFactions = (state: RootState) => state.cards.factions;
 export const getCardsRaces = (state: RootState) => state.cards.races;
 export const getCardsSets = (state: RootState) => state.cards.sets;
+export const getAllCard = (state: RootState) => state.cards.entities;
+export const getInfo = (state: RootState) => state.cards
 export const getCardsLoadingStatus = (state: RootState) =>
   state.cards.isLoading;
 export const getCardsError = (state: RootState) => state.cards.error;
