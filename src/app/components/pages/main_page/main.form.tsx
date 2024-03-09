@@ -65,6 +65,7 @@ const MainFilters = () => {
   };
   const changeUrl = () => {
     const queryString = qs.stringify({
+      search:value,
       ...urlParams,
     });
     
