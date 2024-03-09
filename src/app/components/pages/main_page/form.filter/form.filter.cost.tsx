@@ -14,6 +14,7 @@ const FormFiltersCost = (props: propsCost) => {
       <Form.Select
         aria-label="Default select example"
         className="filter-set_container"
+        onChange={(el)=>localStorage.setItem('formFilters',JSON.stringify({cost:el.target.value}))}
       >
         <option>Откройте меню выбора</option>
         {props.cost.map((el) => {

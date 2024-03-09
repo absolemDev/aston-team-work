@@ -14,6 +14,7 @@ const FormFiltersFormat = (props: propsFormat) => {
       <Form.Select
         aria-label="Default select example"
         className="filter-set_container"
+        onChange={(el)=>localStorage.setItem('formFilters',JSON.stringify({format:el.target.value}))}
       >
         <option>Откройте меню выбора</option>
         {props.format.map((el) => {

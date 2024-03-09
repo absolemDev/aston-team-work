@@ -55,12 +55,14 @@ const MainFilters = () => {
       ? el
       : el.name.toLowerCase().includes(value.toLowerCase());
   });
+  const handleClick = (el: any) => {
+    return el;
+  };
 
   return (
     <>
       <h1 className="header-text">HEARTHSTONE СПИСОК КАРТ</h1>
       <div className="filter-container">
-        {/* <Search currentSearch={(e: any) => setValue(e.target.value)} /> */}
         <div>
           <p className="form-input_header">Поиск</p>
           <InputGroup className="mb-3 form-input">
@@ -88,7 +90,7 @@ const MainFilters = () => {
         <Button
           className="filter-btn_apply"
           variant="dark"
-          onClick={(el) => el}
+          onClick={(el) => handleClick(el)}
         >
           Фильтр
         </Button>
