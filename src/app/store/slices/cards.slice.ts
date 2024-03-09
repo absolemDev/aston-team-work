@@ -183,5 +183,6 @@ export const getCardsSets = (state: RootState) => state.cards.sets;
 export const getCardsLoadingStatus = (state: RootState) =>
   state.cards.isLoading;
 export const getCardsError = (state: RootState) => state.cards.error;
+export const getCurrentCard = (state: RootState) => state.cards.error;
 
 export default cardsSlice.reducer;

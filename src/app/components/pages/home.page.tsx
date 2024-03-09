@@ -1,5 +1,9 @@
+import {PaginationContainer} from "../ui/pagination";
+
 const HomePage = () => {
-  return <h2>HomePage</h2>;
+  return (
+      <PaginationContainer/>
+  );
 };
 
 export { HomePage };
