@@ -56,7 +56,7 @@ const RegisterForm = () => {
     [dispatch, navigate]
   );
 
-  const { formData, handeleSubmit, handleChange, errors } = useForm(
+  const { formData, handleSubmit, handleChange, errors } = useForm(
     inititialData,
     validatorConfig,
     onSubmit
@@ -73,7 +73,7 @@ const RegisterForm = () => {
     <>
       <h2>РЕГИСТРАЦИЯ</h2>
       <hr />
-      <Form onSubmit={handeleSubmit}>
+      <Form onSubmit={handleSubmit}>
         <InputGroupMemo
           id="name"
           value={formData.name}

@@ -53,6 +53,7 @@
     "#commonComponents": "./src/app/components/common/index.ts",
     "#services": "./src/app/services/index.ts",
     "#store": "./src/app/store/index.ts",
-    "#utils": "./src/app/utils/index.ts"
+    "#utils": "./src/app/utils/index.ts",
+    "#ui": "./src/app/components/ui/index.ts"
   }
 }

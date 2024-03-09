@@ -1,14 +1,10 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
 import config from "../config.json";
+import locale from "../ruLocale.json";
+import { getSearchParams } from "../utils/getSearchParams";
 
 interface OptionalParams {
-  health?: number;
-  durability?: number;
-  cost?: number;
-  attack?: number;
-  callback?: string;
-  collectible?: number;
-  locale?: string;
+  [key: string]: string | number;
 }
 
 export interface Card {
@@ -49,12 +45,10 @@ api.interceptors.response.use(
 
 const getURLWithParams = (
   url: string,
-  optionalParams: OptionalParams = { locale: "ruRU" }
+  optionalParams?: OptionalParams
 ): string => {
   let urlWithParams: string = config.apiEndpoint + url;
-  Object.entries(optionalParams).forEach(([key, value], index) => {
-    urlWithParams += `${index === 0 ? "?" : "&"}${key}=${value}`;
-  });
+  if (optionalParams) urlWithParams += getSearchParams(optionalParams);
   return urlWithParams;
 };
 
@@ -124,7 +118,23 @@ const getSingleCard = async (
   return await api.get(getURLWithParams(url, optionalParams));
 };
 
-const getInfo = async (optionalParams?: OptionalParams) => {
+type ClassesKey = keyof typeof locale.classes;
+type QualitiesKey = keyof typeof locale.qualities;
+type RacesKey = keyof typeof locale.races;
+type SetsKey = keyof typeof locale.sets;
+type TypesKey = keyof typeof locale.types;
+
+interface FiltersData {
+  classes: ClassesKey[];
+  qualities: QualitiesKey[];
+  races: RacesKey[];
+  sets: SetsKey[];
+  types: TypesKey[];
+}
+
+const getInfo = async (
+  optionalParams?: OptionalParams
+): Promise<axios.AxiosResponse<FiltersData>> => {
   const url = "info";
   return await api.get(getURLWithParams(url, optionalParams));
 };

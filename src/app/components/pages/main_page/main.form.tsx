@@ -30,7 +30,7 @@ const MainFilters = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [countPerPage] = useState(40);
   const arrOfInfo: any[] = [];
-  const cost = ["0", "1", "2", "3", "4", "5", "6", "7", "8+"];
+  const cost = ["0", "1", "2", "3", "4", "5", "6", "7+"];
   const format = ["Стандарт", "Вольный"];
 
   getArrayFromInfo(info, arrOfInfo);
