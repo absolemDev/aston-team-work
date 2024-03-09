@@ -12,6 +12,7 @@ interface OptionalParams {
 }
 
 export interface Card {
+  [x: string]: any;
   cardId: string;
   name: string;
   cardSet: string;
@@ -39,9 +40,6 @@ api.interceptors.response.use(
   (res: AxiosResponse<Card[]>) => {
     if (res.data instanceof Array)
       res.data = res.data.filter((item) => !!item.img);
-
-    console.log(res.data);
-
     return res;
   },
   (error: AxiosError) => {
