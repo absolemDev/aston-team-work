@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { AppThunk, RootState } from "#store";
 import { Card, apiService } from "../../services/api.service";
+import getEntitiesObjLenght from "../../components/pages/main_page/compute/getEntitiesObjLeinght";
 
 export interface CardsState {
   entities: Card[];
@@ -197,5 +198,5 @@ export const getInfo = (state: RootState) => state.cards
 export const getCardsLoadingStatus = (state: RootState) =>
   state.cards.isLoading;
 export const getCardsError = (state: RootState) => state.cards.error;
-
+export const getEntitiesLenght = (state: RootState) => getEntitiesObjLenght(state.cards.entities);
 export default cardsSlice.reducer;

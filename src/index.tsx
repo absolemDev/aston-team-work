@@ -6,15 +6,16 @@ import { store } from "./app/store/store";
 // import { BrowserRouter } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import {MainFilters} from './app/components/pages/main_page/main.form'
+import { BrowserRouter } from "react-router-dom";
 
 const container = document.getElementById("root")!;
 const root = createRoot(container);
 
 root.render(
   <Provider store={store}>
-    {/* <BrowserRouter>
-      <App /> */}
+    <BrowserRouter>
+     {/* <App /> */}
       <MainFilters/>
-    {/* </BrowserRouter> */}
+    </BrowserRouter> 
   </Provider>
 );

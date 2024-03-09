@@ -1,9 +1,10 @@
 import { useAppDispatch, useAppSelector } from "#hooks";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   getAllCard,
   getInfo,
-  loadCardsByFaction,
+  loadCardsByCardSet,
   loadCardsInfo,
 } from "../../../store/slices/cards.slice";
 import { FormFilters } from "./form.filter/form.filter";
@@ -19,7 +20,8 @@ import {
 import "./style.css";
 import Pagination from "./pagination";
 import getArrayFromInfo from "./compute/getArrayFromInfo";
-import getArrayFromAllCard from "./compute/getArrayFromCard";
+// import getArrayFromAllCard from "./compute/getArrayFromCard";
+import qs from "qs";
 
 const MainFilters = () => {
   const dispatch = useAppDispatch();
@@ -32,13 +34,14 @@ const MainFilters = () => {
   const arrOfInfo: any[] = [];
   const cost = ["0", "1", "2", "3", "4", "5", "6", "7", "8+"];
   const format = ["Стандарт", "Вольный"];
+  const navigate = useNavigate();
 
   getArrayFromInfo(info, arrOfInfo);
-  getArrayFromAllCard(card, arrOfCards);
-
+  // getArrayFromAllCard(card, arrOfCards);
+  card.map((el) => arrOfCards.push(el));
   useEffect(() => {
     //запрашиваешь что-то загружаешь
-    dispatch(loadCardsByFaction("Neutral"));
+    dispatch(loadCardsByCardSet("The Witchwood"));
     dispatch(loadCardsInfo());
   }, [dispatch]);
 
@@ -55,10 +58,20 @@ const MainFilters = () => {
       ? el
       : el.name.toLowerCase().includes(value.toLowerCase());
   });
-  const handleClick = (el: any) => {
-    return el;
+
+  const urlParams: any = {};
+  const getData = (propName: string, data: any) => {
+    urlParams[`${propName}`] = data;
+  };
+  const changeUrl = () => {
+    const queryString = qs.stringify({
+      ...urlParams,
+    });
+    
+    navigate(`?${queryString}`);
   };
 
+  //Сделать через query запросы сохранение фильтров и добавить в card.slice метод возвращающий длину массива
   return (
     <>
       <h1 className="header-text">HEARTHSTONE СПИСОК КАРТ</h1>
@@ -72,25 +85,42 @@ const MainFilters = () => {
             />
           </InputGroup>
         </div>
-        <FormFiltersCost name="Стоимость" cost={cost} />
-        <FormFiltersFormat name="Формат" format={format} />
+        <FormFiltersCost name="Стоимость" cost={cost} change={getData} />
+        <FormFiltersFormat name="Формат" format={format} change={getData} />
         <FormFilters
           name="Редкость"
           filter_param="qualities"
           arrOfInfo={arrOfInfo}
+          change={getData}
         />
-        <FormFilters name="Тип" filter_param="types" arrOfInfo={arrOfInfo} />
+        <FormFilters
+          name="Тип"
+          filter_param="types"
+          arrOfInfo={arrOfInfo}
+          change={getData}
+        />
         <FormFilters
           name="Класс"
           filter_param="classes"
           arrOfInfo={arrOfInfo}
+          change={getData}
         />
-        <FormFilters name="Сет" filter_param="sets" arrOfInfo={arrOfInfo} />
-        <FormFilters name="Раса" filter_param="races" arrOfInfo={arrOfInfo} />
+        <FormFilters
+          name="Сет"
+          filter_param="sets"
+          arrOfInfo={arrOfInfo}
+          change={getData}
+        />
+        <FormFilters
+          name="Раса"
+          filter_param="races"
+          arrOfInfo={arrOfInfo}
+          change={getData}
+        />
         <Button
           className="filter-btn_apply"
           variant="dark"
-          onClick={(el) => handleClick(el)}
+          onClick={() => changeUrl()}
         >
           Фильтр
         </Button>

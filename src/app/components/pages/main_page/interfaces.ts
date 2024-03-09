@@ -4,6 +4,7 @@ export interface propsFilter {
     cost?: string[];
     format?: string[];
     arrOfInfo: any[];
+    change: any
 }
 
 export interface paginationNumbers {
