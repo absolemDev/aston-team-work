@@ -10,7 +10,6 @@ const CardPage = () => {
     state.cards.entities.find((el) => el.cardId === id?.slice(1)),
   );
   let [isFavourite, ChangeFavouriteStatus] = useFavourite(id ?? "");
-  let fav = useAppSelector((state) => state.user.favorites);
 
   return (
     <Container>
