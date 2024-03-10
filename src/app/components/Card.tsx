@@ -1,12 +1,13 @@
 import { useNavigate } from "react-router-dom";
-import React from "react";
+import React, { memo } from "react";
 import { Button, Card as CardComponent } from "react-bootstrap";
 
 type cardType = {
   id: string;
   img: string;
 };
-export default function Card(props: cardType) {
+
+function Card(props: cardType) {
   const navigate = useNavigate();
   return (
     <CardComponent className="w-25 align-items-center">
@@ -19,3 +20,6 @@ export default function Card(props: cardType) {
     </CardComponent>
   );
 }
+
+let CardMemo = memo(Card);
+export { CardMemo };
