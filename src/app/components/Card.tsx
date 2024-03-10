@@ -1,29 +1,21 @@
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import React from "react";
+import { Button, Card as CardComponent } from "react-bootstrap";
 
 type cardType = {
-    id: string
-    name: string
-    rarity: string
-    img: string
-}
+  id: string;
+  img: string;
+};
 export default function Card(props: cardType) {
-    const navigate = useNavigate()
-    return (
-        <div style={{
-            width: "14rem",
-            display: 'flex',
-            flexDirection: "column",
-            alignItems: 'center',
-            maxHeight: '500px',
-            padding: '10px'
-        }}>
-            <img src={props.img} className="card-img-top" alt="Card image" style={{height: '300px'}}/>
-            <div style={{display: 'flex', flexDirection: "column", alignItems: 'center'}} className="card-body">
-                <p style={{fontSize: "18px"}}>Rarity:{props.rarity}</p>
-                <button onClick={() => navigate(`/card/:${props.id}`)} style={{width: "8rem"}} type="button"
-                        className="btn btn-primary">Подробнее
-                </button>
-            </div>
-        </div>
-    )
+  const navigate = useNavigate();
+  return (
+    <CardComponent className="w-25 align-items-center">
+      <CardComponent.Img variant="top" src={props.img} />
+      <CardComponent.Body>
+        <Button onClick={() => navigate(`/card/:${props.id}`)}>
+          Подробнее
+        </Button>
+      </CardComponent.Body>
+    </CardComponent>
+  );
 }
