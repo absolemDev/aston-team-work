@@ -34,7 +34,6 @@ const CardPage = () => {
               <ListGroup.Item>Faction: {card?.faction}</ListGroup.Item>
               <ListGroup.Item>PlayerClass: {card?.playerClass}</ListGroup.Item>
               <ListGroup.Item>Rarity: {card?.rarity}</ListGroup.Item>
-              <ListGroup.Item>Artist: {card?.artist}</ListGroup.Item>
               <ListGroup.Item>
                 Elitism: {card?.elite ? "Elite" : "Non elite card"}
               </ListGroup.Item>
