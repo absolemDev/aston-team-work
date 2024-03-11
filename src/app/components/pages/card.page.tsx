@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { useAppSelector } from "#hooks";
 import { Button, Card, Col, Container, ListGroup, Row } from "react-bootstrap";
 import { useFavourite } from "../../hooks/useFavourite.hook";
+import { getUserLoggedInStatus } from "#store";
 
 const CardPage = () => {
   let { id } = useParams();
@@ -10,6 +11,7 @@ const CardPage = () => {
     state.cards.entities.find((el) => el.cardId === id?.slice(1)),
   );
   let [isFavourite, ChangeFavouriteStatus] = useFavourite(id ?? "");
+  let isLogged = useAppSelector(getUserLoggedInStatus);
 
   return (
     <Container>
@@ -37,14 +39,16 @@ const CardPage = () => {
                 Elitism: {card?.elite ? "Elite" : "Non elite card"}
               </ListGroup.Item>
             </ListGroup>
-            <Button
-              onClick={() => ChangeFavouriteStatus()}
-              className={
-                isFavourite ? "btn btn-danger mt-5" : "btn btn-primary mt-5"
-              }
-            >
-              {isFavourite ? "Убрать из избранного" : "Добавить в избранное"}
-            </Button>
+            {isLogged ?? (
+              <Button
+                onClick={() => ChangeFavouriteStatus()}
+                className={
+                  isFavourite ? "btn btn-danger mt-5" : "btn btn-primary mt-5"
+                }
+              >
+                {isFavourite ? "Убрать из избранного" : "Добавить в избранное"}
+              </Button>
+            )}
           </Card.Body>
         </Col>
       </Row>
