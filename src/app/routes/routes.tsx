@@ -6,6 +6,7 @@ import {
   HomePage,
   SigninPage,
   SignupPage,
+  NotFound
 } from "../components";
 import { DefaultLayout } from "../layouts";
 import { SearchPage } from "../components/pages/search.page";
@@ -47,6 +48,10 @@ const routes = (isLoggedIn: boolean) => [
         path: "about",
         element: isLoggedIn ? <AboutPage /> : <Navigate to="/signin" />,
       },
+      {
+        path: 'not_found',
+        element: <NotFound/>
+      }
     ],
   },
   { path: "*", element: <Navigate to="/" /> },

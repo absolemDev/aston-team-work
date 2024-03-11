@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { Col, Container, Image, Row, Spinner } from "react-bootstrap";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../hooks";
 import {
   getCurrentCard,
@@ -16,6 +16,7 @@ const CardPage = () => {
   const card = useAppSelector(getCurrentCard);
   const isLoggedIn = useAppSelector(getUserLoggedInStatus);
   const textRef = useRef<HTMLParagraphElement>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (id) dispatch(loadSingleCard(id));
@@ -26,10 +27,18 @@ const CardPage = () => {
       textRef.current.insertAdjacentHTML("afterbegin", card.text);
   }, [card]);
 
+  useEffect(()=>{
+    if(card?.cardId === undefined ){
+      navigate({ pathname: "/not_found"})
+    }
+  },[])
+
   return (
     <Container className="pt-3">
       <Row>
-        {card ? (
+        { 
+        // !card?.cardId ? navigate({ pathname: "/not_found"}): <></>;
+        card ? (
           <>
             <Col className="text-end">
               <Image src={card.img} />
