@@ -1,30 +1,44 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
 import config from "../config.json";
 import locale from "../ruLocale.json";
-import { getSearchParams } from "../utils/getSearchParams";
+import { getSearchString } from "../utils/getSearchParams";
+
+type ClassesKey = keyof typeof locale.classes;
+type QualitiesKey = keyof typeof locale.qualities;
+type RacesKey = keyof typeof locale.races;
+export type SetsKey = keyof typeof locale.sets;
+type TypesKey = keyof typeof locale.types;
+
+interface FiltersData {
+  classes: ClassesKey[];
+  qualities: QualitiesKey[];
+  races: RacesKey[];
+  sets: SetsKey[];
+  types: TypesKey[];
+}
 
 interface OptionalParams {
   [key: string]: string | number;
 }
 
-export interface Card {
-  [x: string]: any;
+export interface CardData {
+  [key: string]: string | number;
   cardId: string;
   name: string;
-  cardSet: string;
-  type: string;
-  faction?: string;
-  rarity: string;
+  cardSet: SetsKey;
+  type: TypesKey;
+  faction: string;
+  rarity: QualitiesKey;
   cost: number;
-  attack?: number;
-  health?: number;
-  race?: string;
-  playerClass?: string;
-  img?: string;
-  text?: string;
-  flavor?: string;
-  artist?: string;
-  elite?: string;
+  attack: number;
+  health: number;
+  race: RacesKey;
+  playerClass: ClassesKey;
+  img: string;
+  text: string;
+  flavor: string;
+  artist: string;
+  elite: string;
 }
 
 const api = axios.create({
@@ -33,7 +47,7 @@ const api = axios.create({
 });
 
 api.interceptors.response.use(
-  (res: AxiosResponse<Card[]>) => {
+  (res: AxiosResponse<CardData[]>) => {
     if (res.data instanceof Array)
       res.data = res.data.filter((item) => !!item.img);
     return res;
@@ -48,7 +62,7 @@ const getURLWithParams = (
   optionalParams?: OptionalParams
 ): string => {
   let urlWithParams: string = config.apiEndpoint + url;
-  if (optionalParams) urlWithParams += getSearchParams(optionalParams);
+  if (optionalParams) urlWithParams += getSearchString(optionalParams);
   return urlWithParams;
 };
 
@@ -117,20 +131,6 @@ const getSingleCard = async (
   const url = "cards/" + singleCardName;
   return await api.get(getURLWithParams(url, optionalParams));
 };
-
-type ClassesKey = keyof typeof locale.classes;
-type QualitiesKey = keyof typeof locale.qualities;
-type RacesKey = keyof typeof locale.races;
-type SetsKey = keyof typeof locale.sets;
-type TypesKey = keyof typeof locale.types;
-
-interface FiltersData {
-  classes: ClassesKey[];
-  qualities: QualitiesKey[];
-  races: RacesKey[];
-  sets: SetsKey[];
-  types: TypesKey[];
-}
 
 const getInfo = async (
   optionalParams?: OptionalParams

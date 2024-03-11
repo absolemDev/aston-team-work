@@ -9,6 +9,7 @@ import {
 } from "../components";
 import { DefaultLayout } from "../layouts";
 import { SearchPage } from "../components/pages/search.page";
+import { CardPage } from "../components/pages/card.page";
 
 const routes = (isLoggedIn: boolean) => [
   {
@@ -29,6 +30,10 @@ const routes = (isLoggedIn: boolean) => [
       {
         path: "favorites",
         element: isLoggedIn ? <FavoritesPage /> : <Navigate to="/signin" />,
+      },
+      {
+        path: "card/:id",
+        element: <CardPage />,
       },
       {
         path: "search",

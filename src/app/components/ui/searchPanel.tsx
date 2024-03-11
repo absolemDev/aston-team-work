@@ -1,119 +1,94 @@
-import { ChangeEventHandler, useCallback, useMemo, useState } from "react";
-import { ButtonMemo, InputGroupMemo } from "..";
-import { Col, Row } from "react-bootstrap";
+import { ChangeEventHandler, memo, useMemo } from "react";
+import { InputGroupMemo } from "..";
+import { Accordion, Row } from "react-bootstrap";
 import { SelectMemo } from "../common/form/select";
 import { useAppSelector } from "../../hooks";
 import { getFilters } from "../../store";
-import { useNavigate } from "react-router-dom";
-import { getSearchParams } from "../../utils/getSearchParams";
 
-const SearchPanel = () => {
-  const [searchParams, setSearchParams] = useState({
-    name: "",
-    cost: "",
-    format: "",
-    quality: "",
-    type: "",
-    classe: "",
-    race: "",
-    set: "Base",
-  });
+interface FilterParams {
+  [key: string]: string;
+  name: string;
+  cost: string;
+  format: string;
+  rarity: string;
+  type: string;
+  playerClass: string;
+  race: string;
+}
+
+interface FilterPanelProps {
+  filterParams: FilterParams;
+  handleChange: ChangeEventHandler<HTMLInputElement | HTMLSelectElement>;
+}
+
+const FilterPanel = ({ filterParams, handleChange }: FilterPanelProps) => {
   const costs = useMemo(() => ["0", "1", "2", "3", "4", "5", "6", "7+"], []);
-  const formats = useMemo(() => ["Стандарт", "Вольный"], []);
-  const { qualities, types, classes, races, sets } = useAppSelector(getFilters);
-  const navigate = useNavigate();
-
-  const handleSearch = (): void => {
-    navigate({ pathname: "search", search: getSearchParams(searchParams) });
-  };
-
-  const handleChange: ChangeEventHandler<HTMLInputElement | HTMLSelectElement> =
-    useCallback(({ target }) => {
-      setSearchParams((prevState) => ({
-        ...prevState,
-        [target.name]: target.value,
-      }));
-    }, []);
-
+  const { qualities, types, classes, races } = useAppSelector(getFilters);
   return (
-    <Row>
-      <Col
-        md={{ span: 6, offset: 3 }}
-        className="border border-black pb-2 pt-2"
-      >
-        <SelectMemo
-          id="set"
-          value={searchParams.set}
-          options={sets}
-          onChange={handleChange}
-          label="Набор"
-        />
-        <InputGroupMemo
-          id="name"
-          value={searchParams.name}
-          onChange={handleChange}
-          label="Название"
-        />
-        <Row className="mb-3">
-          <SelectMemo
-            id="cost"
-            value={searchParams.cost}
-            options={costs}
-            defaultOption="Любая стоимость"
-            onChange={handleChange}
-            label="Стоимость маны"
-          />
-          <SelectMemo
-            id="format"
-            value={searchParams.format}
-            options={formats}
-            defaultOption="Любой формат"
-            onChange={handleChange}
-            label="Формат"
-          />
-        </Row>
-        <Row className="mb-3">
-          <SelectMemo
-            id="quality"
-            value={searchParams.quality}
-            options={qualities}
-            defaultOption="Любая редкость"
-            onChange={handleChange}
-            label="Редкость"
-          />
-          <SelectMemo
-            id="type"
-            value={searchParams.type}
-            options={types}
-            defaultOption="Любой Тип"
-            onChange={handleChange}
-            label="Тип"
-          />
-        </Row>
-        <Row className="mb-3">
-          <SelectMemo
-            id="classe"
-            value={searchParams.classe}
-            options={classes}
-            defaultOption="Любой класс"
-            onChange={handleChange}
-            label="Класс"
-          />
-          <SelectMemo
-            id="race"
-            value={searchParams.race}
-            options={races}
-            defaultOption="Любая раса"
-            onChange={handleChange}
-            label="Раса"
-          />
-        </Row>
-        <ButtonMemo variant="dark" stretch onClick={handleSearch}>
-          Поиск
-        </ButtonMemo>
-      </Col>
-    </Row>
+    <>
+      <InputGroupMemo
+        id="name"
+        value={filterParams.name}
+        onChange={handleChange}
+        label="Название"
+      />
+      <Accordion>
+        <Accordion.Item eventKey="0">
+          <Accordion.Header>Фильтры</Accordion.Header>
+          <Accordion.Body>
+            <Row className="mb-3">
+              <SelectMemo
+                id="cost"
+                value={filterParams.cost}
+                options={costs}
+                defaultOption="Любая стоимость"
+                onChange={handleChange}
+                label="Стоимость маны"
+              />
+            </Row>
+            <Row className="mb-3">
+              <SelectMemo
+                id="rarity"
+                value={filterParams.rarity}
+                options={qualities}
+                defaultOption="Любая редкость"
+                onChange={handleChange}
+                label="Редкость"
+              />
+              <SelectMemo
+                id="type"
+                value={filterParams.type}
+                options={types}
+                defaultOption="Любой Тип"
+                onChange={handleChange}
+                label="Тип"
+              />
+            </Row>
+            <Row className="mb-3">
+              <SelectMemo
+                id="playerClass"
+                value={filterParams.playerClass}
+                options={classes}
+                defaultOption="Любой класс"
+                onChange={handleChange}
+                label="Класс"
+              />
+              <SelectMemo
+                id="race"
+                value={filterParams.race}
+                options={races}
+                defaultOption="Любая раса"
+                onChange={handleChange}
+                label="Раса"
+              />
+            </Row>
+          </Accordion.Body>
+        </Accordion.Item>
+      </Accordion>
+    </>
   );
 };
 
-export { SearchPanel };
+const FilterPanelMemo = memo(FilterPanel);
+
+export { FilterPanelMemo };

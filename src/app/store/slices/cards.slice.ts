@@ -1,7 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { AppThunk, RootState } from "#store";
-import { Card, apiService } from "../../services/api.service";
+import { CardData, apiService } from "../../services/api.service";
 import locale from "../../ruLocale.json";
+import { Filter, filterWithPagination } from "../../utils/filterWithPagination";
 
 interface Filters {
   classes: string[];
@@ -14,9 +15,9 @@ interface Filters {
   wild: string[];
 }
 export interface CardsState {
-  entities: Card[];
+  entities: CardData[];
   filters: Filters;
-  currentCard: Card | null;
+  currentCard: CardData | null;
   isLoading: boolean;
   error: string;
 }
@@ -60,6 +61,9 @@ const cardsSlice = createSlice({
     cardsRequestFailed: (state, { payload }) => {
       state.error = payload;
       state.isLoading = false;
+    },
+    cardsCleaned: (state) => {
+      state.entities = [];
     },
   },
 });
@@ -121,7 +125,9 @@ export const loadCardsByCardSet =
   async (dispatch) => {
     try {
       dispatch(cardsRequested());
-      const { data } = await apiService.getCardsByCardSet(cardSet);
+      const { data } = await apiService.getCardsByCardSet(cardSet, {
+        locale: "ruRU",
+      });
       dispatch(cardsRequestSuccess(data));
     } catch (error) {
       if (error instanceof Error) dispatch(cardsRequestFailed(error.message));
@@ -155,9 +161,13 @@ export const loadCardsByType =
 export const loadCardsBySearch =
   (cardName: string): AppThunk =>
   async (dispatch) => {
+    console.log(cardName);
+
     try {
       dispatch(cardsRequested());
-      const { data } = await apiService.getCardsBySearch(cardName);
+      const { data } = await apiService.getCardsBySearch(cardName, {
+        locale: "ruRU",
+      });
       dispatch(cardsRequestSuccess(data));
     } catch (error) {
       if (error instanceof Error) dispatch(cardsRequestFailed(error.message));
@@ -165,12 +175,21 @@ export const loadCardsBySearch =
   };
 
 export const loadSingleCard =
-  (cardName: string): AppThunk =>
-  async (dispatch) => {
+  (cardId: string): AppThunk =>
+  async (dispatch, getStore) => {
     try {
-      dispatch(cardsRequested());
-      const { data } = await apiService.getSingleCard(cardName);
-      dispatch(singleCardRequestSuccess(data));
+      const card = getStore().cards.entities.find(
+        (element) => element.cardId === cardId
+      );
+      if (card) {
+        dispatch(singleCardRequestSuccess(card));
+      } else {
+        dispatch(cardsRequested());
+        const { data } = await apiService.getSingleCard(cardId, {
+          locale: "ruRU",
+        });
+        dispatch(singleCardRequestSuccess(data[0]));
+      }
     } catch (error) {
       if (error instanceof Error) dispatch(cardsRequestFailed(error.message));
     }
@@ -209,10 +228,13 @@ export const loadCardsInfo = (): AppThunk => async (dispatch) => {
 };
 
 export const getAllCard = (state: RootState) => state.cards.entities;
-export const getInfo = (state: RootState) => state.cards;
 export const getFilters = (state: RootState) => state.cards.filters;
+export const getCurrentCard = (state: RootState) => state.cards.currentCard;
 export const getCardsLoadingStatus = (state: RootState) =>
   state.cards.isLoading;
 export const getCardsError = (state: RootState) => state.cards.error;
+export const getFilteredCards =
+  (filter: Filter, page: number) => (state: RootState) =>
+    filterWithPagination(filter, page, state.cards.entities);
 
 export default cardsSlice.reducer;
