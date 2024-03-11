@@ -1,24 +1,39 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { AppThunk, RootState } from "#store";
-import { Card, apiService } from "../../services/api.service";
+import { CardData, apiService } from "../../services/api.service";
+import locale from "../../ruLocale.json";
+import { Filter, filterWithPagination } from "../../utils/filterWithPagination";
 
-export interface CardsState {
-  entities: Card[];
+interface Filters {
   classes: string[];
   races: string[];
   factions: string[];
   sets: string[];
-  currentCard: Card | null;
+  types: string[];
+  qualities: string[];
+  standart: string[];
+  wild: string[];
+}
+export interface CardsState {
+  entities: CardData[];
+  filters: Filters;
+  currentCard: CardData | null;
   isLoading: boolean;
   error: string;
 }
 
 const initialState: CardsState = {
   entities: [],
-  classes: [],
-  races: [],
-  factions: [],
-  sets: [],
+  filters: {
+    classes: [],
+    races: [],
+    factions: [],
+    sets: [],
+    types: [],
+    qualities: [],
+    standart: [],
+    wild: [],
+  },
   currentCard: null,
   isLoading: false,
   error: "",
@@ -41,15 +56,14 @@ const cardsSlice = createSlice({
       state.isLoading = false;
     },
     cardsInfoRequestSuccess: (state, { payload }) => {
-      state.classes = payload.classes;
-      state.races = payload.races;
-      state.factions = payload.factions;
-      state.sets = payload.sets;
-      state.isLoading = false;
+      state.filters = payload;
     },
     cardsRequestFailed: (state, { payload }) => {
       state.error = payload;
       state.isLoading = false;
+    },
+    cardsCleaned: (state) => {
+      state.entities = [];
     },
   },
 });
@@ -65,7 +79,7 @@ export const {
 export const loadAllCards = (): AppThunk => async (dispatch) => {
   try {
     dispatch(cardsRequested());
-    const { data } = await apiService.getAllCard();
+    const { data } = await apiService.getAllCard({ collectible: 1 });
     dispatch(cardsRequestSuccess(data));
   } catch (error) {
     if (error instanceof Error) dispatch(cardsRequestFailed(error.message));
@@ -111,7 +125,9 @@ export const loadCardsByCardSet =
   async (dispatch) => {
     try {
       dispatch(cardsRequested());
-      const { data } = await apiService.getCardsByCardSet(cardSet);
+      const { data } = await apiService.getCardsByCardSet(cardSet, {
+        locale: "ruRU",
+      });
       dispatch(cardsRequestSuccess(data));
     } catch (error) {
       if (error instanceof Error) dispatch(cardsRequestFailed(error.message));
@@ -145,9 +161,13 @@ export const loadCardsByType =
 export const loadCardsBySearch =
   (cardName: string): AppThunk =>
   async (dispatch) => {
+    console.log(cardName);
+
     try {
       dispatch(cardsRequested());
-      const { data } = await apiService.getCardsBySearch(cardName);
+      const { data } = await apiService.getCardsBySearch(cardName, {
+        locale: "ruRU",
+      });
       dispatch(cardsRequestSuccess(data));
     } catch (error) {
       if (error instanceof Error) dispatch(cardsRequestFailed(error.message));
@@ -155,12 +175,21 @@ export const loadCardsBySearch =
   };
 
 export const loadSingleCard =
-  (cardName: string): AppThunk =>
-  async (dispatch) => {
+  (cardId: string): AppThunk =>
+  async (dispatch, getStore) => {
     try {
-      dispatch(cardsRequested());
-      const { data } = await apiService.getSingleCard(cardName);
-      dispatch(singleCardRequestSuccess(data));
+      const card = getStore().cards.entities.find(
+        (element) => element.cardId === cardId
+      );
+      if (card) {
+        dispatch(singleCardRequestSuccess(card));
+      } else {
+        dispatch(cardsRequested());
+        const { data } = await apiService.getSingleCard(cardId, {
+          locale: "ruRU",
+        });
+        dispatch(singleCardRequestSuccess(data[0]));
+      }
     } catch (error) {
       if (error instanceof Error) dispatch(cardsRequestFailed(error.message));
     }
@@ -170,18 +199,42 @@ export const loadCardsInfo = (): AppThunk => async (dispatch) => {
   try {
     dispatch(cardsRequested());
     const { data } = await apiService.getInfo();
-    dispatch(cardsInfoRequestSuccess(data));
+    const mapData = {
+      classes: data.classes.map((element) => ({
+        value: element,
+        label: locale.classes[element] || element,
+      })),
+      qualities: data.qualities.map((element) => ({
+        value: element,
+        label: locale.qualities[element] || element,
+      })),
+      races: data.races.map((element) => ({
+        value: element,
+        label: locale.races[element] || element,
+      })),
+      sets: data.sets.map((element) => ({
+        value: element,
+        label: locale.sets[element] || element,
+      })),
+      types: data.types.map((element) => ({
+        value: element,
+        label: locale.types[element] || element,
+      })),
+    };
+    dispatch(cardsInfoRequestSuccess(mapData));
   } catch (error) {
     if (error instanceof Error) dispatch(cardsRequestFailed(error.message));
   }
 };
 
-export const getCardsClasses = (state: RootState) => state.cards.classes;
-export const getCardsFactions = (state: RootState) => state.cards.factions;
-export const getCardsRaces = (state: RootState) => state.cards.races;
-export const getCardsSets = (state: RootState) => state.cards.sets;
+export const getAllCard = (state: RootState) => state.cards.entities;
+export const getFilters = (state: RootState) => state.cards.filters;
+export const getCurrentCard = (state: RootState) => state.cards.currentCard;
 export const getCardsLoadingStatus = (state: RootState) =>
   state.cards.isLoading;
 export const getCardsError = (state: RootState) => state.cards.error;
+export const getFilteredCards =
+  (filter: Filter, page: number) => (state: RootState) =>
+    filterWithPagination(filter, page, state.cards.entities);
 
 export default cardsSlice.reducer;

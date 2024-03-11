@@ -1,33 +1,44 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
 import config from "../config.json";
+import locale from "../ruLocale.json";
+import { getSearchString } from "../utils/getSearchParams";
 
-interface OptionalParams {
-  health?: number;
-  durability?: number;
-  cost?: number;
-  attack?: number;
-  callback?: string;
-  collectible?: number;
-  locale?: string;
+type ClassesKey = keyof typeof locale.classes;
+type QualitiesKey = keyof typeof locale.qualities;
+type RacesKey = keyof typeof locale.races;
+export type SetsKey = keyof typeof locale.sets;
+type TypesKey = keyof typeof locale.types;
+
+interface FiltersData {
+  classes: ClassesKey[];
+  qualities: QualitiesKey[];
+  races: RacesKey[];
+  sets: SetsKey[];
+  types: TypesKey[];
 }
 
-export interface Card {
+interface OptionalParams {
+  [key: string]: string | number;
+}
+
+export interface CardData {
+  [key: string]: string | number;
   cardId: string;
   name: string;
-  cardSet: string;
-  type: string;
-  faction?: string;
-  rarity: string;
+  cardSet: SetsKey;
+  type: TypesKey;
+  faction: string;
+  rarity: QualitiesKey;
   cost: number;
-  attack?: number;
-  health?: number;
-  race?: string;
-  playerClass?: string;
-  img?: string;
-  text?: string;
-  flavor?: string;
-  artist?: string;
-  elite?: string;
+  attack: number;
+  health: number;
+  race: RacesKey;
+  playerClass: ClassesKey;
+  img: string;
+  text: string;
+  flavor: string;
+  artist: string;
+  elite: string;
 }
 
 const api = axios.create({
@@ -36,12 +47,9 @@ const api = axios.create({
 });
 
 api.interceptors.response.use(
-  (res: AxiosResponse<Card[]>) => {
+  (res: AxiosResponse<CardData[]>) => {
     if (res.data instanceof Array)
       res.data = res.data.filter((item) => !!item.img);
-
-    console.log(res.data);
-
     return res;
   },
   (error: AxiosError) => {
@@ -51,12 +59,10 @@ api.interceptors.response.use(
 
 const getURLWithParams = (
   url: string,
-  optionalParams: OptionalParams = { locale: "ruRU" }
+  optionalParams?: OptionalParams
 ): string => {
   let urlWithParams: string = config.apiEndpoint + url;
-  Object.entries(optionalParams).forEach(([key, value], index) => {
-    urlWithParams += `${index === 0 ? "?" : "&"}${key}=${value}`;
-  });
+  if (optionalParams) urlWithParams += getSearchString(optionalParams);
   return urlWithParams;
 };
 
@@ -126,7 +132,9 @@ const getSingleCard = async (
   return await api.get(getURLWithParams(url, optionalParams));
 };
 
-const getInfo = async (optionalParams?: OptionalParams) => {
+const getInfo = async (
+  optionalParams?: OptionalParams
+): Promise<axios.AxiosResponse<FiltersData>> => {
   const url = "info";
   return await api.get(getURLWithParams(url, optionalParams));
 };

@@ -2,11 +2,18 @@ import { createSlice } from "@reduxjs/toolkit";
 import { AppThunk, RootState } from "#store";
 import { localStorageService, authService, userService } from "#services";
 import { generetaAuthError } from "#utils";
+import { CardData } from "../../services/api.service";
+
+export interface History {
+  cardSet: string;
+  name: string;
+  searchParams: string;
+}
 
 export interface UserState {
   userName: string;
-  favorites: string[];
-  history: string[];
+  favorites: CardData[];
+  history: History[];
   isLoggedIn: boolean;
   isLoading: boolean;
   error: string;
@@ -46,7 +53,9 @@ const userSlice = createSlice({
       state.favorites.push(payload);
     },
     favoriteRemoved: (state, { payload }) => {
-      state.favorites = state.favorites.filter((cardId) => cardId !== payload);
+      state.favorites = state.favorites.filter(
+        (card) => card.cardId !== payload
+      );
     },
     historyAdded: (state, { payload }) => {
       state.history.push(payload);
@@ -117,19 +126,22 @@ export const clearAuthError = (): AppThunk => (dispatch) => {
 };
 
 export const addFavorite =
-  (cardId: string): AppThunk =>
-  (dispatch) => {
-    dispatch(favoriteAdded(cardId));
+  (id: string): AppThunk =>
+  (dispatch, getSate) => {
+    const card = getSate().cards.entities.find(
+      (element) => element.cardId === id
+    );
+    dispatch(favoriteAdded(card));
   };
 
 export const removeFavorite =
-  (cardId: string): AppThunk =>
+  (id: string): AppThunk =>
   (dispatch) => {
-    dispatch(favoriteRemoved(cardId));
+    dispatch(favoriteRemoved(id));
   };
 
 export const addHisory =
-  (history: string): AppThunk =>
+  (history: History): AppThunk =>
   (dispatch) => {
     dispatch(historyAdded(history));
   };
@@ -139,5 +151,9 @@ export const getUserLoggedInStatus = (state: RootState) =>
   state.user.isLoggedIn;
 export const getAuthError = (state: RootState) => state.user.error;
 export const getUserName = (state: RootState) => state.user.userName;
+export const getHistory = (state: RootState) => state.user.history;
+export const getFavoriteCards = (state: RootState) => state.user.favorites;
+export const getCardFavoriteStatus = (id: string) => (state: RootState) =>
+  state.user.favorites.some((element) => element.cardId === id);
 
 export default userSlice.reducer;

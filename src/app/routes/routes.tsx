@@ -8,6 +8,8 @@ import {
   SignupPage,
 } from "../components";
 import { DefaultLayout } from "../layouts";
+import { SearchPage } from "../components/pages/search.page";
+import { CardPage } from "../components/pages/card.page";
 
 const routes = (isLoggedIn: boolean) => [
   {
@@ -30,6 +32,14 @@ const routes = (isLoggedIn: boolean) => [
         element: isLoggedIn ? <FavoritesPage /> : <Navigate to="/signin" />,
       },
       {
+        path: "card/:id",
+        element: <CardPage />,
+      },
+      {
+        path: "search",
+        element: <SearchPage />,
+      },
+      {
         path: "history",
         element: isLoggedIn ? <HistoryPage /> : <Navigate to="/signin" />,
       },
@@ -39,7 +49,7 @@ const routes = (isLoggedIn: boolean) => [
       },
     ],
   },
-  { path: "*", element: <Navigate to="/" /> }
+  { path: "*", element: <Navigate to="/" /> },
 ];
 
-export {routes};
+export { routes };

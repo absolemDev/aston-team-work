@@ -42,7 +42,7 @@ const LoginFrom = () => {
     [dispatch, navigate]
   );
 
-  const { formData, handeleSubmit, handleChange, errors } = useForm(
+  const { formData, handleSubmit, handleChange, errors } = useForm(
     inititialData,
     validatorConfig,
     onSubmit
@@ -59,7 +59,7 @@ const LoginFrom = () => {
     <>
       <h2>ВХОД</h2>
       <hr />
-      <Form onSubmit={handeleSubmit}>
+      <Form onSubmit={handleSubmit}>
         <InputGroupMemo
           id="email"
           value={formData.email}
