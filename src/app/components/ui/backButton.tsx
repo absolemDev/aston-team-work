@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { ButtonMemo } from "..";
+import { ButtonMemo } from "#commonComponents";
 
 const BackButton = () => {
   const navigate = useNavigate();

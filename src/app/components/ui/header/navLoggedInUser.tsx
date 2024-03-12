@@ -1,7 +1,7 @@
-import { Nav, NavDropdown } from "react-bootstrap";
+import { Link } from "react-router-dom";
+import { NavDropdown } from "react-bootstrap";
 import { logOut } from "#store";
 import { useAppDispatch } from "#hooks";
-import { Link } from "react-router-dom";
 import style from "./header.module.css";
 
 interface NavLoggedInUserProps {
@@ -17,15 +17,6 @@ const NavLoggedInUser = ({ userName }: NavLoggedInUserProps) => {
 
   return (
     <>
-      <Nav.Link as={Link} to="/favorites" className="px-3">
-        избранное
-      </Nav.Link>
-      <Nav.Link as={Link} to="/history" href="/history" className="px-3">
-        история
-      </Nav.Link>
-      <Nav.Link as={Link} to="/about" href="/about" className="px-3">
-        о сайте
-      </Nav.Link>
       <NavDropdown
         title={`(${userName})`}
         id="basic-nav-dropdown"
@@ -35,11 +26,10 @@ const NavLoggedInUser = ({ userName }: NavLoggedInUserProps) => {
           as={Link}
           to="/favorites"
           href="#"
-          className="px-3 w-100"
+          className="px-3 w-100 text-center"
           onClick={handleClick}
         >
           Выход
-          {/*<i className="bi bi-box-arrow-right m-2"/>*/}
         </NavDropdown.Item>
       </NavDropdown>
     </>

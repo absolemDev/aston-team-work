@@ -2,9 +2,9 @@ import { Card } from "react-bootstrap";
 import { memo } from "react";
 import { useNavigate } from "react-router-dom";
 import style from "./cards.module.css";
-import { FavoriteButton } from ".";
-import { useAppSelector } from "../../../hooks";
-import { getUserLoggedInStatus } from "../../../store";
+import { FavoriteButton } from "#ui";
+import { useAppSelector } from "#hooks";
+import { getUserLoggedInStatus } from "#store";
 
 interface CardProps {
   id: string;

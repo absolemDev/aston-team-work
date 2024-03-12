@@ -1,9 +1,8 @@
 import { ChangeEventHandler, memo, useMemo } from "react";
-import { InputGroupMemo } from "..";
 import { Accordion, Row } from "react-bootstrap";
-import { SelectMemo } from "../common/form/select";
-import { useAppSelector } from "../../hooks";
-import { getFilters } from "../../store";
+import { SelectMemo, InputGroupMemo } from "#commonComponents";
+import { useAppSelector } from "#hooks";
+import { getFilters } from "#store";
 
 interface FilterParams {
   [key: string]: string;
@@ -38,22 +37,22 @@ const FilterPanel = ({ filterParams, handleChange }: FilterPanelProps) => {
           <Accordion.Body>
             <Row className="mb-3">
               <SelectMemo
-                id="cost"
-                value={filterParams.cost}
-                options={costs}
-                defaultOption="Любая стоимость"
+                id="playerClass"
+                value={filterParams.playerClass}
+                options={classes}
+                defaultOption="Любой класс"
                 onChange={handleChange}
-                label="Стоимость маны"
+                label="Класс"
               />
             </Row>
             <Row className="mb-3">
               <SelectMemo
-                id="rarity"
-                value={filterParams.rarity}
-                options={qualities}
-                defaultOption="Любая редкость"
+                id="race"
+                value={filterParams.race}
+                options={races}
+                defaultOption="Любая раса"
                 onChange={handleChange}
-                label="Редкость"
+                label="Раса"
               />
               <SelectMemo
                 id="type"
@@ -66,20 +65,20 @@ const FilterPanel = ({ filterParams, handleChange }: FilterPanelProps) => {
             </Row>
             <Row className="mb-3">
               <SelectMemo
-                id="playerClass"
-                value={filterParams.playerClass}
-                options={classes}
-                defaultOption="Любой класс"
+                id="rarity"
+                value={filterParams.rarity}
+                options={qualities}
+                defaultOption="Любая редкость"
                 onChange={handleChange}
-                label="Класс"
+                label="Редкость"
               />
               <SelectMemo
-                id="race"
-                value={filterParams.race}
-                options={races}
-                defaultOption="Любая раса"
+                id="cost"
+                value={filterParams.cost}
+                options={costs}
+                defaultOption="Любая стоимость"
                 onChange={handleChange}
-                label="Раса"
+                label="Стоимость маны"
               />
             </Row>
           </Accordion.Body>

@@ -1,17 +1,14 @@
-import { Outlet, useLocation } from "react-router-dom";
-import { Header } from "../components/ui";
-import { BackButton } from "../components/ui/backButton";
+import { Outlet } from "react-router-dom";
+import { Container } from "react-bootstrap";
+import { Header } from "#ui";
 
 const DefaultLayout = () => {
-  const location = useLocation();
-  const showBackButton =
-    location.pathname !== "/" && location.pathname !== "/search";
-
   return (
     <>
       <Header />
-      {showBackButton && <BackButton />}
-      <Outlet />
+      <Container className="pt-3">
+        <Outlet />
+      </Container>
     </>
   );
 };

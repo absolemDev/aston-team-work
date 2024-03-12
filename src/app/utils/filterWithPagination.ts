@@ -1,4 +1,4 @@
-import { CardData } from "../services/api.service";
+import { CardData } from "#services";
 
 export interface Filter {
   [key: string]: string;

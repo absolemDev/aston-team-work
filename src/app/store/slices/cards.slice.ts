@@ -1,8 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { AppThunk, RootState } from "#store";
-import { CardData, apiService } from "../../services/api.service";
-import locale from "../../ruLocale.json";
-import { Filter, filterWithPagination } from "../../utils/filterWithPagination";
+import { CardData, apiService } from "#services";
+import { Filter, filterWithPagination } from "#utils";
+import locale from "#locale";
 
 interface Filters {
   classes: string[];
@@ -64,6 +64,9 @@ const cardsSlice = createSlice({
     },
     cardsCleaned: (state) => {
       state.entities = [];
+    },
+    cardsErrorCleaned: (state) => {
+      state.error = "";
     },
   },
 });

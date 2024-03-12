@@ -1,7 +1,7 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
-import config from "../config.json";
-import locale from "../ruLocale.json";
-import { getSearchString } from "../utils/getSearchParams";
+import config from "#config";
+import locale from "#locale";
+import { getSearchString } from "#utils";
 
 type ClassesKey = keyof typeof locale.classes;
 type QualitiesKey = keyof typeof locale.qualities;

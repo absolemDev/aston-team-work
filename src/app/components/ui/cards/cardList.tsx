@@ -1,6 +1,6 @@
 import { Container } from "react-bootstrap";
-import { CardData } from "../../../services/api.service";
-import { CardMemo } from "./card";
+import { CardData } from "#services";
+import { CardMemo } from "#ui";
 
 interface CardListProps {
   list: CardData[];
@@ -16,4 +16,4 @@ const CardList = ({ list }: CardListProps) => {
   );
 };
 
-export default CardList;
+export { CardList };

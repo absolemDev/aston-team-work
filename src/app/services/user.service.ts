@@ -1,6 +1,5 @@
-import { History } from "./../store/slices/user.slice";
-import { firebaseService, localStorageService } from "#services";
-import { CardData } from "./api.service";
+import { History } from "#store";
+import { firebaseService, localStorageService, CardData } from "#services";
 
 interface UserData {
   _id?: string;

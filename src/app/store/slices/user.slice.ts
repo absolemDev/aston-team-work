@@ -1,8 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { AppThunk, RootState } from "#store";
-import { localStorageService, authService, userService } from "#services";
+import {
+  localStorageService,
+  authService,
+  userService,
+  CardData,
+} from "#services";
 import { generetaAuthError } from "#utils";
-import { CardData } from "../../services/api.service";
 
 export interface History {
   cardSet: string;

@@ -1,22 +1,22 @@
 import { useEffect, useRef } from "react";
-import { Col, Container, Image, Row, Spinner } from "react-bootstrap";
+import { Col, Image, Row, Spinner } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../../hooks";
+import { useAppDispatch, useAppSelector } from "#hooks";
 import {
-  getCardsLoadingStatus,
+  getCardsError,
   getCurrentCard,
   getUserLoggedInStatus,
   loadSingleCard,
-} from "../../store";
-import locale from "../../ruLocale.json";
-import { FavoriteButton } from "..";
+} from "#store";
+import { BackButton, FavoriteButton } from "#ui";
+import locale from "#locale";
 
 const CardPage = () => {
   const dispatch = useAppDispatch();
   const { id } = useParams();
   const card = useAppSelector(getCurrentCard);
   const isLoggedIn = useAppSelector(getUserLoggedInStatus);
-  const isLoading = useAppSelector(getCardsLoadingStatus)
+  const errorSearch = useAppSelector(getCardsError);
   const textRef = useRef<HTMLParagraphElement>(null);
   const navigate = useNavigate();
 
@@ -30,13 +30,15 @@ const CardPage = () => {
   }, [card]);
 
   useEffect(() => {
-    if (!!card && !isLoading) {
+    if (errorSearch) {
       navigate({ pathname: "/not_found" });
+      dispatch({ type: "cards/cardsErrorCleaned" });
     }
-  }, []);
+  }, [errorSearch, dispatch, navigate]);
 
   return (
-    <Container className="pt-3">
+    <>
+      <BackButton />
       <Row>
         {card ? (
           <>
@@ -88,10 +90,12 @@ const CardPage = () => {
             </Col>
           </>
         ) : (
-          <Spinner animation="border" />
+          <div className="d-flex justify-content-center">
+            <Spinner animation="border" />
+          </div>
         )}
       </Row>
-    </Container>
+    </>
   );
 };
 

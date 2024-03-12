@@ -1,16 +1,15 @@
-import { Col, Container, Dropdown, Image, Row, Spinner } from "react-bootstrap";
-import { Link, useNavigate } from "react-router-dom";
-import { InputGroupMemo } from "..";
 import { ChangeEventHandler, useCallback, useState } from "react";
-import { useAppDispatch, useAppSelector } from "../../hooks";
+import { Link, useNavigate } from "react-router-dom";
+import { Col, Dropdown, Image, Row, Spinner } from "react-bootstrap";
+import { InputGroupMemo } from "#commonComponents";
 import {
-  getAllCard,
-  getCardsLoadingStatus,
-  loadCardsBySearch,
-} from "../../store";
-import { CardData } from "../../services/api.service";
+  useAppDispatch,
+  useAppSelector,
+  useDebouncedFunctionWithCansel,
+} from "#hooks";
+import { getAllCard, getCardsLoadingStatus, loadCardsBySearch } from "#store";
+import { CardData } from "#services";
 import style from "./pages.module.css";
-import { useDebouncedFunctionWithCansel } from "../../hooks/useDebouncedFunction";
 
 const HomePage = () => {
   const dispatch = useAppDispatch();
@@ -29,6 +28,7 @@ const HomePage = () => {
   };
 
   const firstCards = getFirstItems(cards, 5);
+  const showResults = Boolean(!isLoading && search && firstCards.length);
 
   const searching = function (searchString: string) {
     dispatch(loadCardsBySearch(searchString));
@@ -36,7 +36,7 @@ const HomePage = () => {
 
   const debounceSearching = useDebouncedFunctionWithCansel(
     searching,
-    1000,
+    500,
     true
   );
 
@@ -50,26 +50,34 @@ const HomePage = () => {
   );
 
   return (
-    <Container>
+    <>
       <div className="text-center fs-2 fw-semibold mb-3">
         Здравствуй, путник! Здесь ты сможешь найти все карты из игры
-        HEARTHSTONE.
+        &laquo;HEARTHSTONE&raquo;.
       </div>
       <Row>
-        <Col md={{ span: 6, offset: 3 }}>
+        <Col className="pt-5" md={{ span: 6, offset: 3 }}>
           <InputGroupMemo
             id="search"
             value={search}
             onChange={handleChangeSearch}
+            placeholder="Введите название карты, например: &laquo;Белка&raquo;"
           />
-          <Dropdown.Menu show={!!search}>
+
+          <Dropdown.Menu show={!!search} className="position-static">
             <Dropdown.Header>
-              Результаты поиска
-              {isLoading && (
-                <Spinner className="ms-5" animation="border" size="sm" />
-              )}
+              <div className="d-flex align-items-center">
+                {isLoading ? (
+                  <>
+                    <strong>Поиск...</strong>
+                    <Spinner className="ms-auto" animation="border" size="sm" />
+                  </>
+                ) : (
+                  <>Результаты поиска:</>
+                )}
+              </div>
             </Dropdown.Header>
-            {!isLoading && search && firstCards.length ? (
+            {showResults &&
               firstCards.map((element) => {
                 return (
                   <Dropdown.Item
@@ -82,15 +90,14 @@ const HomePage = () => {
                     </span>
                   </Dropdown.Item>
                 );
-              })
-            ) : (
-              <Dropdown.Item>Поиск не дал результатов</Dropdown.Item>
-            )}
+              })}
           </Dropdown.Menu>
         </Col>
+        <div className="text-center fst-italic">
+          Или перейдите на страницу расширенного <Link to="search">поиска</Link>
+        </div>
       </Row>
-      <Link to="search">Страница поиска</Link>
-    </Container>
+    </>
   );
 };
 

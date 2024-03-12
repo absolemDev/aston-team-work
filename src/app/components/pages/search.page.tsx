@@ -6,23 +6,21 @@ import {
   useState,
 } from "react";
 import { useSearchParams } from "react-router-dom";
-import { Col, Container, Row, Spinner } from "react-bootstrap";
-import { ButtonMemo, FilterPanelMemo } from "..";
-import CardList from "../ui/cards/cardList";
-import { useAppDispatch, useAppSelector } from "../../hooks";
+import { Col, Row, Spinner } from "react-bootstrap";
+import { ButtonMemo, SelectMemo } from "#commonComponents";
+import { CardList, FilterPanelMemo, PaginationComponent } from "#ui";
+import { useAppDispatch, useAppSelector } from "#hooks";
 import {
   addHisory,
   getAllCard,
   getCardsLoadingStatus,
   getFilters,
   loadCardsByCardSet,
-} from "../../store";
-import { filterWithPagination } from "../../utils/filterWithPagination";
-import { PaginationComponent } from "../ui/pagination";
-import { SelectMemo } from "../common/form/select";
-import { getSearchString } from "../../utils/getSearchParams";
-import locale from "../../ruLocale.json";
-import { SetsKey } from "../../services/api.service";
+} from "#store";
+import { filterWithPagination } from "#utils";
+import { getSearchString } from "#utils";
+import locale from "#locale";
+import { SetsKey } from "#services";
 
 const SearchPage = () => {
   const dispatch = useAppDispatch();
@@ -91,7 +89,7 @@ const SearchPage = () => {
   }, [cardSet, filterParams, setUrlParams]);
 
   return (
-    <Container className="pt-5">
+    <>
       <Row>
         <Col
           md={{ span: 6, offset: 3 }}
@@ -119,19 +117,29 @@ const SearchPage = () => {
         </Col>
       </Row>
       {loading ? (
-        <Spinner animation="border" />
+        <div className="d-flex justify-content-center m-5">
+          <Spinner animation="border" />
+        </div>
       ) : (
         <>
-          <CardList list={filteredData} />
-          <PaginationComponent
-            currentPage={currentPage}
-            itemsCount={countItems}
-            onPageChange={handleChangePage}
-            pageSize={15}
-          />
+          {filteredData.length ? (
+            <>
+              <CardList list={filteredData} />
+              <PaginationComponent
+                currentPage={currentPage}
+                itemsCount={countItems}
+                onPageChange={handleChangePage}
+                pageSize={15}
+              />
+            </>
+          ) : (
+            <div className="text-center fs-5 fst-italic text-secondary p-5">
+              По заданным фильтрам ничего не найдено.
+            </div>
+          )}
         </>
       )}
-    </Container>
+    </>
   );
 };
 

@@ -1,4 +1,5 @@
 import { useCallback, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Alert, Form } from "react-bootstrap";
 import { FormSubmit, useAppDispatch, useAppSelector, useForm } from "#hooks";
 import { ButtonMemo, InputGroupMemo } from "#commonComponents";
@@ -8,7 +9,6 @@ import {
   getUserLoadingStatus,
   signUp,
 } from "#store";
-import { useNavigate } from "react-router-dom";
 
 const RegisterForm = () => {
   const dispatch = useAppDispatch();

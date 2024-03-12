@@ -1,5 +1,5 @@
 import { ChangeEventHandler, FormEvent, useCallback, useState } from "react";
-import { ValidatorConfig, validator } from "../utils";
+import { ValidatorConfig, validator } from "#utils";
 
 interface FormState {
   [key: string]: string;
