@@ -1,10 +1,22 @@
-import { Container } from "react-bootstrap";
+import {Col, Row, Image} from "react-bootstrap";
+import describeSource from "./../../describe.json"
 
 const AboutPage = () => {
   return (
-    <Container className="d-flex justify-content-center m-5">
-      <span>There will be interesting information about this site.</span>
-    </Container>
+  <Col>
+    <Row>
+    <span className="text-uppercase text-center p-3">{describeSource.aboutPage.title}</span>
+    </Row>
+    <Row>
+      <span className="text-center p-2">{describeSource.aboutPage.describe}</span>
+    </Row>
+    <Row>
+      <span className="text-center p-2 mb-3">{describeSource.aboutPage.aboutCharacter}</span>
+    </Row>
+    <Row>
+      <Image src={describeSource.aboutPage.urlImg}></Image>
+    </Row>
+  </Col>
   );
 };
 

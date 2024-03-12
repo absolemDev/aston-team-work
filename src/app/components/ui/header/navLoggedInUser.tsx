@@ -21,6 +21,7 @@ const NavLoggedInUser = ({ userName }: NavLoggedInUserProps) => {
         title={`(${userName})`}
         id="basic-nav-dropdown"
         className={`${style.dropdown} px-1`}
+        align={{ lg: 'end' }}
       >
         <NavDropdown.Item
           as={Link}
@@ -29,7 +30,7 @@ const NavLoggedInUser = ({ userName }: NavLoggedInUserProps) => {
           className="px-3 w-100 text-center"
           onClick={handleClick}
         >
-          Выход
+          Выход<i className="bi bi-box-arrow-right m-2"/>
         </NavDropdown.Item>
       </NavDropdown>
     </>

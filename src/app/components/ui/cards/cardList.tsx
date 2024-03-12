@@ -8,7 +8,7 @@ interface CardListProps {
 
 const CardList = ({ list }: CardListProps) => {
   return (
-    <Container className="d-flex justify-content-center flex-wrap">
+    <Container className="d-flex justify-content-center flex-wrap my-3">
       {list.map((element) => (
         <CardMemo key={element.cardId} id={element.cardId} img={element.img} />
       ))}

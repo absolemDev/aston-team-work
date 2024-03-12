@@ -17,6 +17,8 @@ import {
   getFilters,
   loadCardsByCardSet,
 } from "#store";
+import {PaginationContainer} from "../ui/pagination/index";
+import { SelectMemo } from "../common/form/select";        
 import { filterWithPagination } from "#utils";
 import { getSearchString } from "#utils";
 import locale from "#locale";
@@ -50,7 +52,7 @@ const SearchPage = () => {
     currentPage,
     cards
   );
-
+  const ITEM_PER_PAGE = 15;
   const handleChangeCardSet: ChangeEventHandler<HTMLSelectElement> =
     useCallback(({ target }) => {
       setCardSet(target.value);
@@ -125,12 +127,10 @@ const SearchPage = () => {
           {filteredData.length ? (
             <>
               <CardList list={filteredData} />
-              <PaginationComponent
-                currentPage={currentPage}
-                itemsCount={countItems}
-                onPageChange={handleChangePage}
-                pageSize={15}
-              />
+              <PaginationContainer currentPage={currentPage}
+                               itemsCount={countItems}
+                               onPageChange={handleChangePage}
+                               pageSize={ITEM_PER_PAGE}
             </>
           ) : (
             <div className="text-center fs-5 fst-italic text-secondary p-5">
