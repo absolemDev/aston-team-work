@@ -42,9 +42,9 @@ const HomePage = () => {
 
   const handleChangeSearch: ChangeEventHandler<HTMLInputElement> = useCallback(
     ({ target }) => {
+      dispatch({ type: "cards/cardsCleaned" });
       setSearch(target.value);
       debounceSearching(!target.value, target.value);
-      if (!target.value) dispatch({ type: "cards/cardsCleaned" });
     },
     [debounceSearching, dispatch]
   );
@@ -73,24 +73,27 @@ const HomePage = () => {
                     <Spinner className="ms-auto" animation="border" size="sm" />
                   </>
                 ) : (
-                  <>Результаты поиска:</>
+                  "Результаты поиска:"
                 )}
               </div>
             </Dropdown.Header>
-            {showResults &&
-              firstCards.map((element) => {
-                return (
-                  <Dropdown.Item
-                    key={element.cardId}
-                    onClick={() => navigate(`/card/${element.cardId}`)}
-                  >
-                    <Image src={element.img} className={style.cardInSearch} />
-                    <span className="ms-3 fs-5 fw-semibold">
-                      {element.name}
-                    </span>
-                  </Dropdown.Item>
-                );
-              })}
+            {showResults
+              ? firstCards.map((element) => {
+                  return (
+                    <Dropdown.Item
+                      key={element.cardId}
+                      onClick={() => navigate(`/card/${element.cardId}`)}
+                    >
+                      <Image src={element.img} className={style.cardInSearch} />
+                      <span className="ms-3 fs-5 fw-semibold">
+                        {element.name}
+                      </span>
+                    </Dropdown.Item>
+                  );
+                })
+              : !isLoading && (
+                  <Dropdown.Item disabled>Не найдено.</Dropdown.Item>
+                )}
           </Dropdown.Menu>
         </Col>
         <div className="text-center fst-italic">

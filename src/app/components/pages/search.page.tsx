@@ -8,7 +8,7 @@ import {
 import { useSearchParams } from "react-router-dom";
 import { Col, Row, Spinner } from "react-bootstrap";
 import { ButtonMemo, SelectMemo } from "#commonComponents";
-import { CardList, FilterPanelMemo, PaginationComponent } from "#ui";
+import { CardList, FilterPanelMemo } from "#ui";
 import { useAppDispatch, useAppSelector } from "#hooks";
 import {
   addHisory,
@@ -17,8 +17,7 @@ import {
   getFilters,
   loadCardsByCardSet,
 } from "#store";
-import {PaginationContainer} from "../ui/pagination/index";
-import { SelectMemo } from "../common/form/select";        
+import { PaginationContainer } from "../ui/pagination/index";
 import { filterWithPagination } from "#utils";
 import { getSearchString } from "#utils";
 import locale from "#locale";
@@ -65,6 +64,7 @@ const SearchPage = () => {
       ...prevState,
       [target.name]: target.value,
     }));
+    setCurrentPage(1);
   }, []);
 
   const handleChangePage = (page: number) => setCurrentPage(page);
@@ -124,19 +124,13 @@ const SearchPage = () => {
         </div>
       ) : (
         <>
-          {filteredData.length ? (
-            <>
-              <CardList list={filteredData} />
-              <PaginationContainer currentPage={currentPage}
-                               itemsCount={countItems}
-                               onPageChange={handleChangePage}
-                               pageSize={ITEM_PER_PAGE}
-            </>
-          ) : (
-            <div className="text-center fs-5 fst-italic text-secondary p-5">
-              По заданным фильтрам ничего не найдено.
-            </div>
-          )}
+          <CardList list={filteredData} />
+          <PaginationContainer
+            currentPage={currentPage}
+            itemsCount={countItems}
+            onPageChange={handleChangePage}
+            pageSize={ITEM_PER_PAGE}
+          />
         </>
       )}
     </>

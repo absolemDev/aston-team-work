@@ -1,26 +1,32 @@
-import React from 'react';
-import {Pagination} from "react-bootstrap";
-import {GetRangeTemplateType, SEPARATOR} from "#utils";
+import { Pagination } from "react-bootstrap";
+import { GetRangeTemplateType, SEPARATOR } from "#utils";
 
 type PaginationBodyProps = {
-  pages: Array<GetRangeTemplateType>,
-  currentPage: number,
-  onPageChange: (page: number)=>void,
-  isLoading: boolean,
-}
+  pages: Array<GetRangeTemplateType>;
+  currentPage: number;
+  onPageChange: (page: number) => void;
+};
 
-const PaginationBody = ({pages, currentPage, onPageChange, isLoading}:PaginationBodyProps) => {
+const PaginationBody = ({
+  pages,
+  currentPage,
+  onPageChange,
+}: PaginationBodyProps) => {
   return (
     <>
-      {pages.map((page: GetRangeTemplateType) => (
-        (page !== SEPARATOR)
-          ? <Pagination.Item key={page}
-                             active = {page === currentPage}
-                             onClick={() => onPageChange(page)}
-                             disabled={isLoading}
-          >{page}</Pagination.Item>
-          : <Pagination.Ellipsis />
-      ))}
+      {pages.map((page: GetRangeTemplateType) =>
+        page !== SEPARATOR ? (
+          <Pagination.Item
+            key={page}
+            active={page === currentPage}
+            onClick={() => onPageChange(page)}
+          >
+            {page}
+          </Pagination.Item>
+        ) : (
+          <Pagination.Ellipsis />
+        )
+      )}
     </>
   );
 };

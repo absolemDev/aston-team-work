@@ -8,14 +8,10 @@ const FavoritesPage = () => {
   return (
     <>
       <BackButton />
-      {cards.length ? (
-        <CardList list={cards} />
-      ) : (
-        <div className="text-center fs-5 fst-italic text-secondary pt-5">
-          Добавляй карты в избранное <i className="bi bi-heart-fill"></i> и
-          просматривай их в одном месте.
-        </div>
-      )}
+      <CardList
+        list={cards}
+        placeholder="Добавляй карты в избранное и просматривай их в одном месте."
+      />
     </>
   );
 };

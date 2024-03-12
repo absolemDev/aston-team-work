@@ -59,6 +59,7 @@
     "#layouts": "./src/app/layouts/index.ts",
     "#routes": "./src/app/routes/index.ts",
     "#locale": "./src/app/ruLocale.json",
-    "#config": "./src/app/config.json"
+    "#config": "./src/app/config.json",
+    "#describe": "./src/app/describe.json"
   }
 }
