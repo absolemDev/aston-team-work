@@ -7,6 +7,7 @@ interface ButtonProps {
   stretch?: boolean;
   disabled?: boolean;
   onClick?: () => void;
+  className?: string;
   children: ReactNode;
 }
 
@@ -16,13 +17,14 @@ const ButtonElement = ({
   stretch,
   disabled,
   onClick,
+  className,
   children,
 }: ButtonProps) => {
   return (
     <Button
       type={type}
       variant={variant}
-      className={`mt-2${stretch ? " w-100" : ""}`}
+      className={`mt-2 rounded-0 ${stretch ? " w-100" : ""} ${className}`}
       disabled={disabled}
       onClick={onClick}
     >

@@ -1,5 +1,5 @@
 import { ChangeEventHandler, FormEvent, useCallback, useState } from "react";
-import { ValidatorConfig, validator } from "../utils";
+import { ValidatorConfig, validator } from "#utils";
 
 interface FormState {
   [key: string]: string;
@@ -21,7 +21,7 @@ const useForm = (
     return Object.keys(errors).length === 0;
   }, [formData, validatorConfig]);
 
-  const handeleSubmit = useCallback(
+  const handleSubmit = useCallback(
     (event: FormEvent) => {
       event.preventDefault();
       if (!validate()) return;
@@ -40,7 +40,7 @@ const useForm = (
     []
   );
 
-  return { formData, handeleSubmit, handleChange, errors };
+  return { formData, handleSubmit, handleChange, errors };
 };
 
 export { useForm };

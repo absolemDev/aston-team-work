@@ -1,4 +1,5 @@
 import { useCallback, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Alert, Form } from "react-bootstrap";
 import { useForm, FormSubmit, useAppDispatch, useAppSelector } from "#hooks";
 import { ButtonMemo, InputGroupMemo } from "#commonComponents";
@@ -8,7 +9,6 @@ import {
   getUserLoadingStatus,
   logIn,
 } from "#store";
-import { useNavigate } from "react-router-dom";
 
 const LoginFrom = () => {
   const dispatch = useAppDispatch();
@@ -39,10 +39,10 @@ const LoginFrom = () => {
 
   const onSubmit: FormSubmit = useCallback(
     (data) => dispatch(logIn(data.email, data.password, () => navigate("/"))),
-    [dispatch]
+    [dispatch, navigate]
   );
 
-  const { formData, handeleSubmit, handleChange, errors } = useForm(
+  const { formData, handleSubmit, handleChange, errors } = useForm(
     inititialData,
     validatorConfig,
     onSubmit
@@ -56,33 +56,37 @@ const LoginFrom = () => {
   );
 
   return (
-    <Form onSubmit={handeleSubmit}>
-      <InputGroupMemo
-        id="email"
-        value={formData.email}
-        onChange={handleChange}
-        label="Email"
-        placeholder="Введите почту"
-        error={errors.email}
-      />
-      <InputGroupMemo
-        id="password"
-        value={formData.password}
-        onChange={handleChange}
-        label="Пароль"
-        type="password"
-        placeholder="Введите пароль"
-        error={errors.password}
-      />
-      <ButtonMemo type="submit" disabled={isLoading} stretch>
-        Вход
-      </ButtonMemo>
-      {authError && (
-        <Alert variant="danger" className="mt-3">
-          {authError}
-        </Alert>
-      )}
-    </Form>
+    <>
+      <h2>ВХОД</h2>
+      <hr />
+      <Form onSubmit={handleSubmit}>
+        <InputGroupMemo
+          id="email"
+          value={formData.email}
+          onChange={handleChange}
+          label="Email"
+          placeholder="Введите почту"
+          error={errors.email}
+        />
+        <InputGroupMemo
+          id="password"
+          value={formData.password}
+          onChange={handleChange}
+          label="Пароль"
+          type="password"
+          placeholder="Введите пароль"
+          error={errors.password}
+        />
+        <ButtonMemo type="submit" disabled={isLoading} variant="dark" stretch>
+          Войти
+        </ButtonMemo>
+        {authError && (
+          <Alert variant="danger" className="mt-3">
+            {authError}
+          </Alert>
+        )}
+      </Form>
+    </>
   );
 };
 

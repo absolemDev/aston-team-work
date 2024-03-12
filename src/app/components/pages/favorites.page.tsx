@@ -1,7 +1,19 @@
-import React from "react";
+import { useAppSelector } from "#hooks";
+import { getFavoriteCards } from "#store";
+import { BackButton, CardList } from "#ui";
 
 const FavoritesPage = () => {
-  return <h2>Favorites Page</h2>;
+  const cards = useAppSelector(getFavoriteCards);
+
+  return (
+    <>
+      <BackButton />
+      <CardList
+        list={cards}
+        placeholder="Добавляй карты в избранное и просматривай их в одном месте."
+      />
+    </>
+  );
 };
 
 export { FavoritesPage };

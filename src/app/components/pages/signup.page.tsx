@@ -1,10 +1,13 @@
-import { RegisterForm } from "../ui";
+import { Col, Row } from "react-bootstrap";
+import { RegisterForm } from "#ui";
 
 const SignupPage = () => {
   return (
-    <>
-      <RegisterForm />
-    </>
+    <Row>
+      <Col md={{ span: 6, offset: 3 }}>
+        <RegisterForm />
+      </Col>
+    </Row>
   );
 };
 

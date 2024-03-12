@@ -1,13 +1,25 @@
 import { useRoutes } from "react-router-dom";
 import { routes } from "./routes/routes";
 import { Container } from "react-bootstrap";
-import { useAppSelector } from "./hooks";
-import { getUserLoadingStatus } from "./store";
+import { useAppDispatch, useAppSelector } from "./hooks";
+import { getUserLoggedInStatus, loadCardsInfo, loadUserData } from "./store";
+import { useEffect } from "react";
 
 function App() {
-  const isLoggedIn = useAppSelector(getUserLoadingStatus);
+  const dispatch = useAppDispatch();
+  const isLoggedIn = useAppSelector(getUserLoggedInStatus);
   const elements = useRoutes(routes(isLoggedIn));
-  return <Container className="App">{elements}</Container>;
+
+  useEffect(() => {
+    dispatch(loadCardsInfo());
+    dispatch(loadUserData());
+  }, [dispatch]);
+
+  return (
+    <Container className="App m-0 p-0" fluid="true">
+      {elements}
+    </Container>
+  );
 }
 
 export { App };

@@ -1,12 +1,16 @@
 import { Navigate } from "react-router-dom";
 import {
+  AboutPage,
   FavoritesPage,
   HistoryPage,
   HomePage,
   SigninPage,
   SignupPage,
-} from "../components";
-import { DefaultLayout } from "../layouts";
+  NotFoundPage,
+  SearchPage,
+  CardPage,
+} from "#pages";
+import { DefaultLayout } from "#layouts";
 
 const routes = (isLoggedIn: boolean) => [
   {
@@ -29,8 +33,24 @@ const routes = (isLoggedIn: boolean) => [
         element: isLoggedIn ? <FavoritesPage /> : <Navigate to="/signin" />,
       },
       {
+        path: "card/:id",
+        element: <CardPage />,
+      },
+      {
+        path: "search",
+        element: <SearchPage />,
+      },
+      {
         path: "history",
         element: isLoggedIn ? <HistoryPage /> : <Navigate to="/signin" />,
+      },
+      {
+        path: "about",
+        element: <AboutPage />,
+      },
+      {
+        path: "not_found",
+        element: <NotFoundPage />,
       },
     ],
   },
