@@ -89,7 +89,6 @@ const HomePage = () => {
           </Dropdown.Menu>
         </Col>
       </Row>
-
       <Link to="search">Страница поиска</Link>
     </Container>
   );
