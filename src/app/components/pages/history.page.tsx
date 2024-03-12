@@ -1,18 +1,25 @@
-import { Container } from "react-bootstrap";
-import { useAppSelector } from "../../hooks";
-import { getHistory } from "../../store";
-import HistoryItem from "../ui/historyItem";
+import { useAppSelector } from "#hooks";
+import { getHistory } from "#store";
+import { BackButton, HistoryItem } from "#ui";
 
 const HistoryPage = () => {
   const history = useAppSelector(getHistory);
 
   return (
-    <Container>
-      <h2>История поиска</h2>
-      {history.map((element, index) => (
-        <HistoryItem key={index} {...element} />
-      ))}
-    </Container>
+    <>
+      <BackButton />
+      <div className="pt-3">
+        {history.length ? (
+          history.map((element, index) => (
+            <HistoryItem key={index} {...element} />
+          ))
+        ) : (
+          <div className="text-center fs-5 fst-italic text-secondary pt-5">
+            Здесь будет храниться история поиска
+          </div>
+        )}
+      </div>
+    </>
   );
 };
 

@@ -1,8 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { AppThunk, RootState } from "#store";
-import { localStorageService, authService, userService } from "#services";
+import {
+  localStorageService,
+  authService,
+  userService,
+  CardData,
+} from "#services";
 import { generetaAuthError } from "#utils";
-import { CardData } from "../../services/api.service";
 
 export interface History {
   cardSet: string;
@@ -45,6 +49,22 @@ const userSlice = createSlice({
       state.error = payload;
       state.isLoading = false;
     },
+    userDataRequested: (state) => {
+      state.isLoading = true;
+      state.error = "";
+    },
+    userDataRequestSuccess: (state, { payload }) => {
+      state.userName = payload.name;
+      state.favorites = payload.favorites || [];
+      state.history = payload.history || [];
+      state.isLoggedIn = true;
+      state.isLoading = false;
+      state.error = "";
+    },
+    userDataRequestFailed: (state, { payload }) => {
+      state.error = payload;
+      state.isLoading = false;
+    },
     userLogout: (state) => {
       state.userName = "";
       state.isLoggedIn = false;
@@ -70,12 +90,26 @@ export const {
   authRequested,
   authRequestSuccess,
   authRequestFailed,
+  userDataRequested,
+  userDataRequestSuccess,
+  userDataRequestFailed,
   userLogout,
   favoriteAdded,
   favoriteRemoved,
   historyAdded,
   errorCleaned,
 } = userSlice.actions;
+
+export const loadUserData = (): AppThunk => async (dispatch) => {
+  try {
+    dispatch(userDataRequested());
+    const { content } = await userService.getUserData();
+    dispatch(userDataRequestSuccess(content));
+  } catch (error) {
+    if (error instanceof Error)
+      dispatch(userDataRequestFailed(generetaAuthError(error.message)));
+  }
+};
 
 export const logIn =
   (email: string, password: string, redirect: () => void): AppThunk =>
@@ -86,7 +120,7 @@ export const logIn =
       localStorageService.setTokens(authData);
       const { content } = await userService.getUserData();
       localStorageService.setUserName(content.name);
-      dispatch(authRequestSuccess({ name: content.name }));
+      dispatch(authRequestSuccess(content));
       redirect();
     } catch (error) {
       if (error instanceof Error)
@@ -105,7 +139,13 @@ export const signUp =
     dispatch(authRequested());
     try {
       const data = await authService.register({ email, password });
-      await userService.create({ _id: data.localId, name, email });
+      await userService.create({
+        _id: data.localId,
+        name,
+        email,
+        favorites: [],
+        history: [],
+      });
       localStorageService.setTokens(data);
       localStorageService.setUserName(name);
       dispatch(authRequestSuccess({ name }));
@@ -127,23 +167,26 @@ export const clearAuthError = (): AppThunk => (dispatch) => {
 
 export const addFavorite =
   (id: string): AppThunk =>
-  (dispatch, getSate) => {
+  async (dispatch, getSate) => {
     const card = getSate().cards.entities.find(
       (element) => element.cardId === id
     );
     dispatch(favoriteAdded(card));
+    await userService.update({ favorites: getSate().user.favorites });
   };
 
 export const removeFavorite =
   (id: string): AppThunk =>
-  (dispatch) => {
+  async (dispatch, getSate) => {
     dispatch(favoriteRemoved(id));
+    await userService.update({ favorites: getSate().user.favorites });
   };
 
 export const addHisory =
   (history: History): AppThunk =>
-  (dispatch) => {
+  async (dispatch, getSate) => {
     dispatch(historyAdded(history));
+    await userService.update({ history: getSate().user.history });
   };
 
 export const getUserLoadingStatus = (state: RootState) => state.user.isLoading;

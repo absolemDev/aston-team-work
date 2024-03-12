@@ -2,7 +2,9 @@ import { Card } from "react-bootstrap";
 import { memo } from "react";
 import { useNavigate } from "react-router-dom";
 import style from "./cards.module.css";
-import { FavoriteButton } from ".";
+import { FavoriteButton } from "#ui";
+import { useAppSelector } from "#hooks";
+import { getUserLoggedInStatus } from "#store";
 
 interface CardProps {
   id: string;
@@ -10,7 +12,8 @@ interface CardProps {
 }
 
 function CardComponent({ id, img }: CardProps) {
-  let navigate = useNavigate();
+  const isLoggedIn = useAppSelector(getUserLoggedInStatus);
+  const navigate = useNavigate();
   const handleClick = () => navigate(`/card/${id}`);
   return (
     <>
@@ -19,10 +22,12 @@ function CardComponent({ id, img }: CardProps) {
         className={`${style.card} border-0 position-relative m-1`}
       >
         <Card.Img variant="top" src={img} />
-        <FavoriteButton
-          id={id}
-          className={`top-0 end-0 border-0 position-absolute`}
-        />
+        {isLoggedIn && (
+          <FavoriteButton
+            id={id}
+            className={`top-0 end-0 border-0 position-absolute`}
+          />
+        )}
       </Card>
     </>
   );

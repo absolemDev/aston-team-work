@@ -1,6 +1,6 @@
-import { Alert } from "react-bootstrap";
-import { History } from "../../store";
 import { useNavigate } from "react-router-dom";
+import { Alert } from "react-bootstrap";
+import { History } from "#store";
 
 const HistoryItem = ({ cardSet, name, searchParams }: History) => {
   const navigate = useNavigate();
@@ -14,4 +14,4 @@ const HistoryItem = ({ cardSet, name, searchParams }: History) => {
   );
 };
 
-export default HistoryItem;
+export { HistoryItem };

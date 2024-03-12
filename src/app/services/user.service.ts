@@ -1,9 +1,12 @@
-import { firebaseService, localStorageService } from "#services";
+import { History } from "#store";
+import { firebaseService, localStorageService, CardData } from "#services";
 
 interface UserData {
-  _id: string;
-  name: string;
-  email: string;
+  _id?: string;
+  name?: string;
+  email?: string;
+  favorites?: CardData[];
+  history?: History[];
 }
 
 const userEndpoint = "user/";

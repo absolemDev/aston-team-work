@@ -54,6 +54,11 @@
     "#services": "./src/app/services/index.ts",
     "#store": "./src/app/store/index.ts",
     "#utils": "./src/app/utils/index.ts",
-    "#ui": "./src/app/components/ui/index.ts"
+    "#ui": "./src/app/components/ui/index.ts",
+    "#pages": "./src/app/components/pages/index.ts",
+    "#layouts": "./src/app/layouts/index.ts",
+    "#routes": "./src/app/routes/index.ts",
+    "#locale": "./src/app/ruLocale.json",
+    "#config": "./src/app/config.json"
   }
 }

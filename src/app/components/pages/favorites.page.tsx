@@ -1,16 +1,22 @@
-import { Container } from "react-bootstrap";
-import { useAppSelector } from "../../hooks";
-import { getFavoriteCards } from "../../store";
-import CardList from "../ui/cards/cardList";
+import { useAppSelector } from "#hooks";
+import { getFavoriteCards } from "#store";
+import { BackButton, CardList } from "#ui";
 
 const FavoritesPage = () => {
   const cards = useAppSelector(getFavoriteCards);
 
   return (
-    <Container>
-      <h2>Избранное</h2>
-      <CardList list={cards} />
-    </Container>
+    <>
+      <BackButton />
+      {cards.length ? (
+        <CardList list={cards} />
+      ) : (
+        <div className="text-center fs-5 fst-italic text-secondary pt-5">
+          Добавляй карты в избранное <i className="bi bi-heart-fill"></i> и
+          просматривай их в одном месте.
+        </div>
+      )}
+    </>
   );
 };
 

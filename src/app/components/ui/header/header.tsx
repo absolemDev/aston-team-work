@@ -1,12 +1,13 @@
+import { Link } from "react-router-dom";
 import { Container, Image, Nav, Navbar } from "react-bootstrap";
 import { useAppSelector } from "#hooks";
-import { getUserName } from "#store";
-import { Logo, NavLoggedInUser } from "./index";
-import { NavLoggedOutUser } from "./index";
+import { getUserLoggedInStatus, getUserName } from "#store";
+import { Logo, NavLoggedInUser, NavLoggedOutUser } from "#ui";
 import style from "./header.module.css";
 
 const Header = () => {
   const userName = useAppSelector(getUserName);
+  const isLoggedin = useAppSelector(getUserLoggedInStatus);
 
   return (
     <Navbar
@@ -17,7 +18,28 @@ const Header = () => {
         <Logo />
         <Navbar className="m-0 justify-content-end" id="basic-navbar-nav">
           <Nav>
-            {userName ? (
+            <Nav.Link as={Link} to="/search" href="/about" className="px-3">
+              поиск
+            </Nav.Link>
+            {isLoggedin && (
+              <>
+                <Nav.Link as={Link} to="/favorites" className="px-3">
+                  избранное
+                </Nav.Link>
+                <Nav.Link
+                  as={Link}
+                  to="/history"
+                  href="/history"
+                  className="px-3"
+                >
+                  история
+                </Nav.Link>
+              </>
+            )}
+            <Nav.Link as={Link} to="/about" href="/about" className="px-3">
+              о сайте
+            </Nav.Link>
+            {isLoggedin ? (
               <NavLoggedInUser userName={userName} />
             ) : (
               <NavLoggedOutUser />

@@ -1,5 +1,5 @@
 import { Col, Row } from "react-bootstrap";
-import { RegisterForm } from "../ui";
+import { RegisterForm } from "#ui";
 
 const SignupPage = () => {
   return (

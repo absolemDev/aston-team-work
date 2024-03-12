@@ -1,12 +1,14 @@
-import React from "react";
-import {Outlet} from "react-router-dom";
-import {Header} from "../components/ui";
+import { Outlet } from "react-router-dom";
+import { Container } from "react-bootstrap";
+import { Header } from "#ui";
 
 const DefaultLayout = () => {
   return (
     <>
-      <Header/>
-      <Outlet/>
+      <Header />
+      <Container className="pt-3">
+        <Outlet />
+      </Container>
     </>
   );
 };

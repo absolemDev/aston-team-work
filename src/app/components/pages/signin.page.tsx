@@ -1,6 +1,5 @@
-import React from "react";
-import { LoginFrom } from "../ui/forms/loginFrom";
 import { Col, Row } from "react-bootstrap";
+import { LoginFrom } from "#ui";
 
 const SigninPage = () => {
   return (

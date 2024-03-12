@@ -1,11 +1,7 @@
-import { Button } from "react-bootstrap";
-import { useAppDispatch, useAppSelector } from "../../../hooks";
-import {
-  addFavorite,
-  getCardFavoriteStatus,
-  removeFavorite,
-} from "../../../store";
 import { MouseEventHandler } from "react";
+import { Button } from "react-bootstrap";
+import { useAppDispatch, useAppSelector } from "#hooks";
+import { addFavorite, getCardFavoriteStatus, removeFavorite } from "#store";
 
 interface FavoriteButtonProps {
   id: string;
