@@ -51,7 +51,7 @@ const HomePage = () => {
 
   return (
     <Container>
-      <div className="text-center fs-2 fw-semibold mb-3">
+      <div className="text-center fs-2 fw-semibold mb-3 my-3">
         Здравствуй, путник! Здесь ты сможешь найти все карты из игры
         HEARTHSTONE.
       </div>
@@ -89,8 +89,6 @@ const HomePage = () => {
           </Dropdown.Menu>
         </Col>
       </Row>
-
-      <Link to="search">Страница поиска</Link>
     </Container>
   );
 };

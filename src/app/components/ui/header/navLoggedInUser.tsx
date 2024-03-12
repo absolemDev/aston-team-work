@@ -17,6 +17,9 @@ const NavLoggedInUser = ({ userName }: NavLoggedInUserProps) => {
 
   return (
     <>
+      <Nav.Link as={Link} to="/search" className="px-3">
+        расширенный поиск
+      </Nav.Link>
       <Nav.Link as={Link} to="/favorites" className="px-3">
         избранное
       </Nav.Link>
@@ -30,16 +33,17 @@ const NavLoggedInUser = ({ userName }: NavLoggedInUserProps) => {
         title={`(${userName})`}
         id="basic-nav-dropdown"
         className={`${style.dropdown} px-1`}
+        align={{ lg: 'end' }}
       >
         <NavDropdown.Item
           as={Link}
           to="/favorites"
           href="#"
-          className="px-3 w-100"
+          className="px-5"
           onClick={handleClick}
         >
           Выход
-          {/*<i className="bi bi-box-arrow-right m-2"/>*/}
+          <i className="bi bi-box-arrow-right m-2"/>
         </NavDropdown.Item>
       </NavDropdown>
     </>
